@@ -278,6 +278,7 @@ class Tutorail_solver:
     def region_merge(self, feature_vector_array, method='SAD', thres=12, mode='hvd', start=(0,0)):  
         """
         """
+
         def sub_region_merge(i, j):
             neighbour_array = self.find_neighbour_array(i, j, visited_array, result_array.shape, mode)
             neighbour_array = self.assign_neighbour_value(i, j, result_array, feature_vector_array, visited_array, neighbour_array, method, thres, region_method='merge')
@@ -306,6 +307,39 @@ class Tutorail_solver:
     
         return result_array
 
+    def k_means(self, feature_vector_array, k, ori_feature_vetor_array):
+        """
+    
+        """
+        def compute_new_cluster_center():
+            new_ori_feature_vetor_array = np.zeros(ori_feature_vetor_array.shape)
+            for i in range(1, k+1):
+                correspond_index = np.where(result_array==i)
+                new_ori_feature_vetor_array[i-1][:] = np.mean(feature_vector_array[correspond_index], axis=0)
+            return new_ori_feature_vetor_array
+
+        assert k > 0
+        assert k == len(ori_feature_vetor_array)
+        feature_vector_array = np.array(feature_vector_array)
+        ori_feature_vetor_array = np.array(ori_feature_vetor_array)
+        result_array = np.empty(feature_vector_array.shape[:-1])
+
+        while True:
+            result_array_copy = result_array.copy()
+            for i in range(feature_vector_array.shape[0]):
+                for j in range(feature_vector_array.shape[1]):
+                    feature_vector = feature_vector_array[i][j]
+                    assert feature_vector.shape == ori_feature_vetor_array[0].shape
+                    dist_list = list()
+                    for m in range(k):
+                        dist_list.append(self.compute_SAD_diff(feature_vector, ori_feature_vetor_array[m]))
+                    label = dist_list.index(min(dist_list)) + 1
+                    result_array[i][j] = label
+            if (result_array_copy == result_array).all():
+                break
+            ori_feature_vetor_array = compute_new_cluster_center()
+
+        return result_array
 
 if __name__ == '__main__':
     solver = Tutorail_solver()
@@ -338,8 +372,10 @@ if __name__ == '__main__':
     # print(result)
 
     feature_vector_array = [[[5, 10, 15], [10, 15, 30], [10, 10, 25]], [[10, 10, 15], [5, 20, 15], [10, 5, 30]], [[5, 5, 15], [30, 10, 5], [30, 10, 10]]]
-    result_region_grow = solver.region_growing(feature_vector_array)
-    result_region_merge = solver.region_merge(feature_vector_array)
-    print(result_region_grow)
-    print(result_region_merge) 
+    # result_region_grow = solver.region_growing(feature_vector_array)
+    # result_region_merge = solver.region_merge(feature_vector_array)
+    # print(result_region_grow)
+    # print(result_region_merge) 
+    result_k_means = solver.k_means(feature_vector_array, 2, [[5, 10, 15], [10, 10, 25]])
+    print(result_k_means)
 
