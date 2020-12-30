@@ -1,3 +1,12 @@
+# -*- encoding: utf-8 -*-
+'''
+@File    :   tutorial.py
+@Time    :   2020/12/25 00:00:00
+@Author  :   XuMengEn 
+@Version :   1.0
+@Contact :   mengen0120@gmail.com
+'''
+
 import os
 import numpy as np
 import math
@@ -210,7 +219,7 @@ class Tutorail_solver:
 
         feature_vector_array = np.array(feature_vector_array)
         result_array = np.empty(feature_vector_array.shape[:-1])
-        visited_array = [['False' for j in range(feature_vector_array.shape[1])] for i in range(feature_vector_array.shape[0])]
+        visited_array = [[False for j in range(feature_vector_array.shape[1])] for i in range(feature_vector_array.shape[0])]
         i, j = start[0], start[1]
         label = 1 
         result_array[i][j] = label
@@ -233,36 +242,69 @@ class Tutorail_solver:
             neighbour_sub = np.array([i, j]) - neighbour
             neighbour_list = list()
             for val in neighbour_sub:
-                if 0 <= val[0] < boundary[0] and 0 <= val[1] < boundary[1] and visited_array[val[0]][val[1]] == 'False':
+                if 0 <= val[0] < boundary[0] and 0 <= val[1] < boundary[1] and visited_array[val[0]][val[1]] == False:
                     neighbour_list.append(val)
         elif mode == 'hv':
             neighbour = np.array([[0, -1], [-1, 0], [1, 0], [0, 1]])
             neighbour_sub = np.array([i, j]) - neighbour
             neighbour_list = list()
             for val in neighbour_sub:
-                if 0 <= val[0] < boundary[0] and 0 <= val[1] < boundary[1] and visited_array[val[0]][val[1]] == 'False':
+                if 0 <= val[0] < boundary[0] and 0 <= val[1] < boundary[1] and visited_array[val[0]][val[1]] == False:
                     neighbour_list.append(val)
         return np.array(neighbour_list)
              
-    def assign_neighbour_value(self, i, j, result_array, feature_vector_array, visited_array, neighbour_array, method, thres):
-         """
-         """
-         #TODO 'L2'
-         assert method in ['SAD']
-         compare_feature_vector = feature_vector_array[i][j]
-         result_list = list()
-         for coordinate in neighbour_array:
-             if result_array[coordinate[0]][coordinate[1]] >= 1:
-                 continue
-             feature_vector = feature_vector_array[coordinate[0]][coordinate[1]]
-             if method == 'SAD':
-                 distance = self.compute_SAD_diff(compare_feature_vector, feature_vector)
-                 if distance <= thres:
-                     result_array[coordinate[0]][coordinate[1]] = result_array[i][j]
-                     visited_array[coordinate[0]][coordinate[1]] = 'True'
-                     result_list.append(coordinate)
-         return np.array(result_list)
+    def assign_neighbour_value(self, i, j, result_array, feature_vector_array, visited_array, neighbour_array, method, thres, region_method='growing'):
+        """
+        """
+        #TODO 'L2'
+        assert method in ['SAD']
+        result_list = list()
+        if region_method == 'growing':
+            compare_feature_vector = feature_vector_array[i][j]
+        elif region_method == 'merge':
+            region_label = result_array[i][j]
+            correspond_index = np.where(result_array==region_label)
+            compare_feature_vector = np.mean(feature_vector_array[correspond_index], axis=0)
+        for coordinate in neighbour_array:
+            feature_vector = feature_vector_array[coordinate[0]][coordinate[1]]
+            if method == 'SAD':
+                distance = self.compute_SAD_diff(compare_feature_vector, feature_vector)
+                if distance <= thres:
+                    result_array[coordinate[0]][coordinate[1]] = result_array[i][j]
+                    visited_array[coordinate[0]][coordinate[1]] = True
+                    result_list.append(coordinate)
+        return np.array(result_list)
 
+    def region_merge(self, feature_vector_array, method='SAD', thres=12, mode='hvd', start=(0,0)):  
+        """
+        """
+        def sub_region_merge(i, j):
+            neighbour_array = self.find_neighbour_array(i, j, visited_array, result_array.shape, mode)
+            neighbour_array = self.assign_neighbour_value(i, j, result_array, feature_vector_array, visited_array, neighbour_array, method, thres, region_method='merge')
+            for coordinate in neighbour_array:
+                sub_region_merge(coordinate[0], coordinate[1])
+        
+        def check_result_array():
+            for i in range(len(visited_array)):
+                for j in range(len(visited_array[0])):
+                    if not visited_array[i][j]:
+                        return [i, j]
+            return None
+
+        assert len(np.array(feature_vector_array).shape) == 3
+        feature_vector_array = np.array(feature_vector_array)
+        result_array = np.array([i+1 for i in range(feature_vector_array.shape[0]*feature_vector_array.shape[1])]).reshape(np.array(feature_vector_array).shape[:-1])
+        visited_array = [[False for j in range(feature_vector_array.shape[1])] for i in range(feature_vector_array.shape[0])]
+        i, j = start[0], start[1]
+        visited_array[i][j] = True
+        sub_region_merge(i, j)
+        
+        while check_result_array():
+            [i, j] = check_result_array()
+            visited_array[i][j] = True
+            sub_region_merge(i, j)    
+    
+        return result_array
 
 
 if __name__ == '__main__':
@@ -295,7 +337,9 @@ if __name__ == '__main__':
     # result = solver.compute_harris_corner_detector(Ix, Iy)
     # print(result)
 
-    # feature_vector_array = [[[5, 10, 15], [10, 15, 30], [10, 10, 25]], [[10, 10, 15], [5, 20, 15], [10, 5, 30]], [[5, 5, 15], [30, 10, 5], [30, 10, 10]]]
-    # result = solver.region_growing(feature_vector_array)
-    # print(result) 
+    feature_vector_array = [[[5, 10, 15], [10, 15, 30], [10, 10, 25]], [[10, 10, 15], [5, 20, 15], [10, 5, 30]], [[5, 5, 15], [30, 10, 5], [30, 10, 10]]]
+    result_region_grow = solver.region_growing(feature_vector_array)
+    result_region_merge = solver.region_merge(feature_vector_array)
+    print(result_region_grow)
+    print(result_region_merge) 
 
