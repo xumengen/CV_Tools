@@ -238,18 +238,39 @@ class Tutorail_solver:
         """
         assert mode in ['hvd', 'hv']
         if mode == 'hvd':
-            neighbour = np.array([[-1, -1], [0, -1], [-1, 1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]])
-            neighbour_sub = np.array([i, j]) - neighbour
+            neighbour = np.array([[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]])
+            neighbour_sub = np.array([i, j]) + neighbour
             neighbour_list = list()
             for val in neighbour_sub:
                 if 0 <= val[0] < boundary[0] and 0 <= val[1] < boundary[1] and visited_array[val[0]][val[1]] == False:
                     neighbour_list.append(val)
         elif mode == 'hv':
             neighbour = np.array([[0, -1], [-1, 0], [1, 0], [0, 1]])
-            neighbour_sub = np.array([i, j]) - neighbour
+            neighbour_sub = np.array([i, j]) + neighbour
             neighbour_list = list()
             for val in neighbour_sub:
                 if 0 <= val[0] < boundary[0] and 0 <= val[1] < boundary[1] and visited_array[val[0]][val[1]] == False:
+                    neighbour_list.append(val)
+        return np.array(neighbour_list)
+
+    # TODO merge v1v2
+    def find_neighbour_array_v2(self, i, j, boundary, mode):
+        """
+        """
+        assert mode in ['hvd', 'hv']
+        if mode == 'hvd':
+            neighbour = np.array([[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]])
+            neighbour_sub = np.array([i, j]) + neighbour
+            neighbour_list = list()
+            for val in neighbour_sub:
+                if 0 <= val[0] < boundary[0] and 0 <= val[1] < boundary[1]:
+                    neighbour_list.append(val)
+        elif mode == 'hv':
+            neighbour = np.array([[0, -1], [-1, 0], [1, 0], [0, 1]])
+            neighbour_sub = np.array([i, j]) + neighbour
+            neighbour_list = list()
+            for val in neighbour_sub:
+                if 0 <= val[0] < boundary[0] and 0 <= val[1] < boundary[1]:
                     neighbour_list.append(val)
         return np.array(neighbour_list)
              
@@ -341,6 +362,24 @@ class Tutorail_solver:
 
         return result_array
 
+    def dilation(self, input_array, mode):
+        """
+        """
+        input_array = np.array(input_array)
+        assert len(input_array.shape) == 2
+        output_array = np.zeros(input_array.shape)
+        for i in range(input_array.shape[0]):
+            for j in range(input_array.shape[1]):
+                if input_array[i][j] == 0:
+                    neighbour_array = self.find_neighbour_array_v2(i, j, input_array.shape, mode)
+                    for neighbour in neighbour_array:
+                        if input_array[neighbour[0]][neighbour[1]] == 1:
+                            output_array[i][j] = 1
+                else:
+                    output_array[i][j] = input_array[i][j]
+        return output_array
+
+
 if __name__ == '__main__':
     solver = Tutorail_solver()
 
@@ -372,10 +411,20 @@ if __name__ == '__main__':
     # print(result)
 
     feature_vector_array = [[[5, 10, 15], [10, 15, 30], [10, 10, 25]], [[10, 10, 15], [5, 20, 15], [10, 5, 30]], [[5, 5, 15], [30, 10, 5], [30, 10, 10]]]
-    # result_region_grow = solver.region_growing(feature_vector_array)
-    # result_region_merge = solver.region_merge(feature_vector_array)
-    # print(result_region_grow)
-    # print(result_region_merge) 
+    result_region_grow = solver.region_growing(feature_vector_array)
+    result_region_merge = solver.region_merge(feature_vector_array)
+    print(result_region_grow)
+    print(result_region_merge) 
     result_k_means = solver.k_means(feature_vector_array, 2, [[5, 10, 15], [10, 10, 25]])
     print(result_k_means)
 
+    # input_array = [[0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #                [0, 0, 1, 0, 1, 1, 1, 0, 0],
+    #                [0, 0, 0, 0, 1, 1, 1, 0, 0],
+    #                [0, 0, 1, 1, 0, 1, 1, 0, 0],
+    #                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #                [0, 0, 0, 0, 0, 0, 0, 0, 0],]
+
+    # output_array = solver.dilation(input_array, 'hvd')
+    # print(output_array)
