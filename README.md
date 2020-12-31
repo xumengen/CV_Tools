@@ -40,6 +40,12 @@ The main function contains:
 ```
 ```
 
+### Usage
+
+```
+python main.py
+```
+
 
 ### Plugins
 
