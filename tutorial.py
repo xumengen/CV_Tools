@@ -428,7 +428,7 @@ class Tutorail_solver:
         print("the result of region split and merge is\n {}\n".format(result_array))
         return result_array
 
-    def k_means(self, feature_vector_array, k, ori_feature_vetor_array):
+    def k_means(self, feature_vector_array, k, ori_feature_vetor_array, method='SAD'):
         """
     
         """
@@ -462,6 +462,76 @@ class Tutorail_solver:
 
         print("the result of region k-means is\n {}\n".format(result_array))
         return result_array
+
+    # TODO add other cluster method
+    def agglomerative_hierarchical_clustering(self, feature_vector_array, k=3, method='SAD', cluster_method='centroid'):
+        """
+        """
+
+        feature_vector_array = np.array(feature_vector_array)
+        cluster_array = feature_vector_array.reshape(-1, feature_vector_array.shape[-1])
+
+        record_list = []
+        for i in range(1, cluster_array.shape[0]+1):
+            record_list.append([i])
+        while cluster_array.shape[0] > k:
+            result_list = []
+            for i in range(cluster_array.shape[0]):
+                cluster_1 = cluster_array[i]
+                for j in range(i+1, cluster_array.shape[0]):
+                    cluster_2 = cluster_array[j]
+                    dist = self.compute_SAD_diff(cluster_1, cluster_2)
+                    result_list.append([i+1, j+1, dist])
+            min_dist = min([i[-1] for i in result_list])
+            pair_result = []
+            for result in result_list:
+                if result[-1] <= min_dist:
+                    min_dist = result[-1]
+                    pair_result.append(result[:-1])
+            cluster_result = list()
+            symbol = True
+            for i in range(1, cluster_array.shape[0]+1):
+                tmp = []
+                for pair in pair_result:
+                    if i in pair:
+                        for val in pair:
+                            tmp.append(val)
+                for result in cluster_result:
+                    if set(result) >= set(tmp):
+                        symbol = False
+                if symbol:
+                    cluster_result.append(list(set(tmp)))
+                symbol = True
+                        
+            new_cluster_index = list()
+            for result in cluster_result:
+                for i in result:
+                    new_cluster_index.append(i)
+            new_cluster_array = list()
+            new_record_list = list()
+            for i in range(len(cluster_result)):
+                if not cluster_result[i]:
+                    continue
+                tmp = []
+                for result in cluster_result[i]:
+                    target = record_list[result-1]
+                    for m in target:
+                        tmp.append(m)
+                new_record_list.append(tmp)
+                index = np.array(cluster_result[i]) - 1
+                if cluster_method == 'centroid':
+                    new_cluster_array.append(np.mean(cluster_array[index], axis=0))
+            for i in range(1, cluster_array.shape[0]+1):
+                if i in new_cluster_index:
+                    continue
+                else:
+                    new_cluster_array.append(cluster_array[i-1])
+                new_record_list.append(record_list[i-1])
+            cluster_array = np.array(new_cluster_array)
+            record_list = new_record_list
+
+        print("the result of agglomerative hierarchical clustering is\n {}\n".format(record_list))
+        return record_list
 
     def dilation(self, input_array, mode):
         """
@@ -531,10 +601,11 @@ if __name__ == '__main__':
     # print(result)
 
     feature_vector_array = [[[5, 10, 15], [10, 15, 30], [10, 10, 25]], [[10, 10, 15], [5, 20, 15], [10, 5, 30]], [[5, 5, 15], [30, 10, 5], [30, 10, 10]]]
-    solver.region_growing(feature_vector_array)
-    solver.region_merge(feature_vector_array)
-    solver.k_means(feature_vector_array, 2, [[5, 10, 15], [10, 10, 25]])
-    solver.region_split_and_merge(feature_vector_array)
+    # solver.region_growing(feature_vector_array)
+    # solver.region_merge(feature_vector_array)
+    # solver.k_means(feature_vector_array, 2, [[5, 10, 15], [10, 10, 25]])
+    # solver.region_split_and_merge(feature_vector_array)
+    solver.agglomerative_hierarchical_clustering(feature_vector_array)
 
     # input_array = [[0, 0, 0, 0, 0, 0, 0, 0, 0],
     #                [0, 0, 0, 0, 0, 0, 0, 0, 0],
