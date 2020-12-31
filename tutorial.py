@@ -375,6 +375,25 @@ class Tutorail_solver:
                     for neighbour in neighbour_array:
                         if input_array[neighbour[0]][neighbour[1]] == 1:
                             output_array[i][j] = 1
+                            break
+                else:
+                    output_array[i][j] = input_array[i][j]
+        return output_array
+
+    def erosion(self, input_array, mode):
+        """
+        """
+        input_array = np.array(input_array)
+        assert len(input_array.shape) == 2
+        output_array = np.ones(input_array.shape)
+        for i in range(input_array.shape[0]):
+            for j in range(input_array.shape[1]):
+                if input_array[i][j] == 1:
+                    neighbour_array = self.find_neighbour_array_v2(i, j, input_array.shape, mode)
+                    for neighbour in neighbour_array:
+                        if input_array[neighbour[0]][neighbour[1]] == 0:
+                            output_array[i][j] = 0
+                            break
                 else:
                     output_array[i][j] = input_array[i][j]
         return output_array
@@ -410,13 +429,13 @@ if __name__ == '__main__':
     # result = solver.compute_harris_corner_detector(Ix, Iy)
     # print(result)
 
-    feature_vector_array = [[[5, 10, 15], [10, 15, 30], [10, 10, 25]], [[10, 10, 15], [5, 20, 15], [10, 5, 30]], [[5, 5, 15], [30, 10, 5], [30, 10, 10]]]
-    result_region_grow = solver.region_growing(feature_vector_array)
-    result_region_merge = solver.region_merge(feature_vector_array)
-    print(result_region_grow)
-    print(result_region_merge) 
-    result_k_means = solver.k_means(feature_vector_array, 2, [[5, 10, 15], [10, 10, 25]])
-    print(result_k_means)
+    # feature_vector_array = [[[5, 10, 15], [10, 15, 30], [10, 10, 25]], [[10, 10, 15], [5, 20, 15], [10, 5, 30]], [[5, 5, 15], [30, 10, 5], [30, 10, 10]]]
+    # result_region_grow = solver.region_growing(feature_vector_array)
+    # result_region_merge = solver.region_merge(feature_vector_array)
+    # print(result_region_grow)
+    # print(result_region_merge) 
+    # result_k_means = solver.k_means(feature_vector_array, 2, [[5, 10, 15], [10, 10, 25]])
+    # print(result_k_means)
 
     # input_array = [[0, 0, 0, 0, 0, 0, 0, 0, 0],
     #                [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -427,4 +446,11 @@ if __name__ == '__main__':
     #                [0, 0, 0, 0, 0, 0, 0, 0, 0],]
 
     # output_array = solver.dilation(input_array, 'hvd')
+    # print(output_array)
+    # output_array = solver.erosion(output_array, 'hvd')
+    # print(output_array)
+
+    # output_array = solver.erosion(input_array, 'hv')
+    # print(output_array)
+    # output_array = solver.dilation(output_array, 'hv')
     # print(output_array)
