@@ -296,7 +296,7 @@ class Tutorail_solver:
                     result_list.append(coordinate)
         return np.array(result_list)
 
-    def region_merge(self, feature_vector_array, method='SAD', thres=12, mode='hvd', start=(0,0)):  
+    def region_merge(self, feature_vector_array, method='SAD', thres=12, mode='hvd', start=(0,0), result_array=None):  
         """
         """
 
@@ -315,7 +315,10 @@ class Tutorail_solver:
 
         assert len(np.array(feature_vector_array).shape) == 3
         feature_vector_array = np.array(feature_vector_array)
-        result_array = np.array([i+1 for i in range(feature_vector_array.shape[0]*feature_vector_array.shape[1])]).reshape(np.array(feature_vector_array).shape[:-1])
+        if not result_array.all():
+            result_array = np.array([i+1 for i in range(feature_vector_array.shape[0]*feature_vector_array.shape[1])]).reshape(np.array(feature_vector_array).shape[:-1])
+        else:
+            result_array = result_array
         visited_array = [[False for j in range(feature_vector_array.shape[1])] for i in range(feature_vector_array.shape[0])]
         i, j = start[0], start[1]
         visited_array[i][j] = True
@@ -326,6 +329,90 @@ class Tutorail_solver:
             visited_array[i][j] = True
             sub_region_merge(i, j)    
     
+        return result_array
+
+    # TODO change 3*3 to n*n
+    def region_split_and_merge(self, feature_vector_array, method='SAD', thres=12, mode='hvd', start=(0, 0)):
+        """
+        """
+
+        def change_result_array(sub_feature_vector_array, label):
+            unit_param = int(len(correspond_index[0]) ** 0.5)
+            old_array_shape = [unit_param, unit_param, feature_vector_array.shape[-1]]
+            if unit_param % 2 != 0:
+                new_array_shape = [unit_param+1, unit_param+1, feature_vector_array.shape[-1]]
+                sub_feature_vector_array = sub_feature_vector_array.reshape(old_array_shape)
+                new_sub_feature_vector_array = np.zeros(new_array_shape)
+                for i in range(new_array_shape[0]):
+                    for j in range(new_array_shape[1]):
+                        if 0 <= i < old_array_shape[0] and j == old_array_shape[1]:
+                            new_sub_feature_vector_array[i][j][:] = sub_feature_vector_array[i][j-1][:]
+                        elif 0 <= j < old_array_shape[1] and i == old_array_shape[0]:
+                            new_sub_feature_vector_array[i][j][:] = sub_feature_vector_array[i-1][j][:]
+                        elif i == old_array_shape[0] and j == old_array_shape[1]:
+                            new_sub_feature_vector_array[i][j][:] = sub_feature_vector_array[i-1][j-1][:]
+                        else:
+                            new_sub_feature_vector_array[i][j][:] = sub_feature_vector_array[i][j][:]
+                sub_feature_vector_array = new_sub_feature_vector_array
+            else:
+                new_array_shape = [unit_param, unit_param, feature_vector_array.shape[-1]]
+            new_result_array = np.zeros(new_array_shape[:-1])
+            partition_param = (unit_param + 1) // 2
+            for i in range(new_result_array.shape[0]):
+                for j in range(new_result_array.shape[1]):
+                    if (i+1) <= partition_param and (j+1) <= partition_param:
+                        new_result_array[i][j] = label
+                    elif (i+1) <= partition_param and (j+1) > partition_param:
+                        new_result_array[i][j] = count + 1
+                    elif (i+1) > partition_param and (j+1) <= partition_param:
+                        new_result_array[i][j] = count + 2
+                    else:
+                        new_result_array[i][j] = count + 3
+            if unit_param % 2 != 0:
+                return sub_feature_vector_array, new_result_array
+            else:
+                return new_result_array
+
+
+        feature_vector_array = np.array(feature_vector_array)
+        assert feature_vector_array.shape[0] == feature_vector_array.shape[1] == 3
+        result_array = np.ones(feature_vector_array.shape[:-1])
+        count = 1
+        correspond_index = np.where(result_array==1)
+        sub_feature_vector_array = feature_vector_array[correspond_index]
+        for i in range(sub_feature_vector_array.shape[0]):
+            for j in range(i+1, sub_feature_vector_array.shape[0]):
+                if method == 'SAD':
+                    dist = self.compute_SAD_diff(sub_feature_vector_array[i], sub_feature_vector_array[j])
+                    if dist > 12:
+                        feature_vector_array, result_array = change_result_array(sub_feature_vector_array, 1)    
+                        count += 3
+                        break
+            break
+        for label in [1, 2, 3, 4]:
+            correspond_index = np.where(result_array==label)
+            sub_feature_vector_array = feature_vector_array[correspond_index]
+            for i in range(sub_feature_vector_array.shape[0]):
+                for j in range(i+1, sub_feature_vector_array.shape[0]):
+                    if method == 'SAD':
+                        dist = self.compute_SAD_diff(sub_feature_vector_array[i], sub_feature_vector_array[j])
+                        if dist > 12:
+                            new_result_array = change_result_array(sub_feature_vector_array, label)
+                            correspond_index_array = np.array(list(zip(correspond_index[0], correspond_index[1])))
+                            index = 0
+                            for m in range(new_result_array.shape[0]):
+                                for n in range(new_result_array.shape[1]):
+                                    point = correspond_index_array[index]
+                                    index += 1
+                                    result_array[point[0]][point[1]] = new_result_array[m][n]
+                            count += 3
+                            break
+                break
+        print("the result of region split is\n {}\n".format(result_array))
+            
+                            
+        result_array = self.region_merge(feature_vector_array, method=method, thres=thres, mode=mode, start=start, result_array=result_array)
+        print("the result of region split and merge is\n {}\n".format(result_array))
         return result_array
 
     def k_means(self, feature_vector_array, k, ori_feature_vetor_array):
@@ -429,13 +516,14 @@ if __name__ == '__main__':
     # result = solver.compute_harris_corner_detector(Ix, Iy)
     # print(result)
 
-    # feature_vector_array = [[[5, 10, 15], [10, 15, 30], [10, 10, 25]], [[10, 10, 15], [5, 20, 15], [10, 5, 30]], [[5, 5, 15], [30, 10, 5], [30, 10, 10]]]
+    feature_vector_array = [[[5, 10, 15], [10, 15, 30], [10, 10, 25]], [[10, 10, 15], [5, 20, 15], [10, 5, 30]], [[5, 5, 15], [30, 10, 5], [30, 10, 10]]]
     # result_region_grow = solver.region_growing(feature_vector_array)
     # result_region_merge = solver.region_merge(feature_vector_array)
     # print(result_region_grow)
     # print(result_region_merge) 
     # result_k_means = solver.k_means(feature_vector_array, 2, [[5, 10, 15], [10, 10, 25]])
     # print(result_k_means)
+    result_split_and_merge = solver.region_split_and_merge(feature_vector_array)
 
     # input_array = [[0, 0, 0, 0, 0, 0, 0, 0, 0],
     #                [0, 0, 0, 0, 0, 0, 0, 0, 0],
