@@ -408,7 +408,18 @@ class Tutorail_solver:
                             count += 3
                             break
                 break
+
+        for i in range(result_array.shape[0]):
+            for j in range(result_array.shape[1]):
+                label = result_array[i][j]
+                correspond_index = np.where(result_array==label)
+                if len(correspond_index[0]) > 1:
+                    mean_feature_vector = np.mean(feature_vector_array[correspond_index], axis=0)
+                    for i in range(len(correspond_index[0])):
+                        feature_vector_array[correspond_index[0][i]][correspond_index[1][i]] = mean_feature_vector
+
         print("the result of region split is\n {}\n".format(result_array))
+        print("the result feature vector of regoin split is\n {}\n".format(feature_vector_array))
             
                             
         result_array = self.region_merge(feature_vector_array, method=method, thres=thres, mode=mode, start=start, result_array=result_array)
