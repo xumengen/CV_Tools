@@ -231,6 +231,7 @@ class Tutorail_solver:
             result_array[i][j] = label
             sub_region_growing(i, j)    
     
+        print("the result of region growing is\n {}\n".format(result_array))
         return result_array
 
     def find_neighbour_array(self, i, j, visited_array, boundary, mode):
@@ -296,7 +297,7 @@ class Tutorail_solver:
                     result_list.append(coordinate)
         return np.array(result_list)
 
-    def region_merge(self, feature_vector_array, method='SAD', thres=12, mode='hvd', start=(0,0), result_array=None):  
+    def region_merge(self, feature_vector_array, method='SAD', thres=12, mode='hvd', start=(0,0), result_array=[]):  
         """
         """
 
@@ -315,7 +316,7 @@ class Tutorail_solver:
 
         assert len(np.array(feature_vector_array).shape) == 3
         feature_vector_array = np.array(feature_vector_array)
-        if not result_array.all():
+        if type(result_array) == list:
             result_array = np.array([i+1 for i in range(feature_vector_array.shape[0]*feature_vector_array.shape[1])]).reshape(np.array(feature_vector_array).shape[:-1])
         else:
             result_array = result_array
@@ -329,6 +330,7 @@ class Tutorail_solver:
             visited_array[i][j] = True
             sub_region_merge(i, j)    
     
+        print("the result of region merge is\n {}\n".format(result_array))
         return result_array
 
     # TODO change 3*3 to n*n
@@ -458,6 +460,7 @@ class Tutorail_solver:
                 break
             ori_feature_vetor_array = compute_new_cluster_center()
 
+        print("the result of region k-means is\n {}\n".format(result_array))
         return result_array
 
     def dilation(self, input_array, mode):
@@ -528,13 +531,10 @@ if __name__ == '__main__':
     # print(result)
 
     feature_vector_array = [[[5, 10, 15], [10, 15, 30], [10, 10, 25]], [[10, 10, 15], [5, 20, 15], [10, 5, 30]], [[5, 5, 15], [30, 10, 5], [30, 10, 10]]]
-    # result_region_grow = solver.region_growing(feature_vector_array)
-    # result_region_merge = solver.region_merge(feature_vector_array)
-    # print(result_region_grow)
-    # print(result_region_merge) 
-    # result_k_means = solver.k_means(feature_vector_array, 2, [[5, 10, 15], [10, 10, 25]])
-    # print(result_k_means)
-    result_split_and_merge = solver.region_split_and_merge(feature_vector_array)
+    solver.region_growing(feature_vector_array)
+    solver.region_merge(feature_vector_array)
+    solver.k_means(feature_vector_array, 2, [[5, 10, 15], [10, 10, 25]])
+    solver.region_split_and_merge(feature_vector_array)
 
     # input_array = [[0, 0, 0, 0, 0, 0, 0, 0, 0],
     #                [0, 0, 0, 0, 0, 0, 0, 0, 0],
