@@ -9,7 +9,7 @@
 
 import os
 import numpy as np
-from tutorial import *
+from functional import *
 
 
 if __name__ == '__main__':
