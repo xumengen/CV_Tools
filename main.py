@@ -72,5 +72,17 @@ if __name__ == '__main__':
     # result = solver.compute_thin_lens_equation(f=35, z1=500, z2=None)
     # print(result)
 
-    result = solver.compute_3d_point_2d_coordinate([10, 10, 500], [244, 180], [925, 740])
+    # result = solver.compute_3d_point_2d_coordinate([10, 10, 500], [244, 180], [925, 740])
+    # print(result)
+
+    ori_imgae = [[[205, 195],
+                  [238, 203]],
+                 [[143, 138],
+                  [166, 143]],
+                 [[154, 145],
+                  [174, 151]],
+    ]
+    result = solver.convert_rbg_to_gray(ori_imgae, 8)
+    print(result)
+    result = solver.convert_rbg_to_gray(ori_imgae, 2)
     print(result)

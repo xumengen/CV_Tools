@@ -602,3 +602,23 @@ class Tutorail_solver:
             new_result_array.append(int(round(result)))
         return new_result_array
 
+    def convert_rbg_to_gray(self, ori_image, bit=8):
+        """
+        """
+        assert len(ori_image) == 3
+        ori_image_array = np.array(ori_image)
+        result_image = np.mean(ori_image_array, axis=0)
+        new_result_image = np.zeros(result_image.shape)
+        for i in range(result_image.shape[0]):
+            for j in range(result_image.shape[1]):
+                new_result_image[i][j] = int(round(result_image[i][j]))
+        
+        interval = (2 ** 8) / (2 ** bit)
+        final_result = np.zeros(new_result_image.shape)
+        for i in range(new_result_image.shape[0]):
+            for j in range(new_result_image.shape[1]):
+                final_result[i][j] = new_result_image[i][j] // interval
+
+        return final_result
+        
+
