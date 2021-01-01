@@ -35,9 +35,8 @@ The main function contains:
 
 ### Installation
 
-
-
 ```
+git clone --recursive https://github.com/xumengen/CV_Tools.git
 ```
 
 ### Usage
