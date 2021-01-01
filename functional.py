@@ -568,3 +568,17 @@ class Tutorail_solver:
                 else:
                     output_array[i][j] = input_array[i][j]
         return output_array
+
+    def compute_thin_lens_equation(self, f=None, z1=None, z2=None):
+        """
+        thin lens equation: 1/f = 1/z1 + 1/z2
+        """
+        assert f > 0
+        if not f and z1 and z2:
+            return 1.0 / (1.0 / abs(z1) + 1.0 / abs(z2))
+        elif f and not z1 and z2:
+            return 1.0 / (1.0 / abs(f) - 1.0 / abs(z2))
+        elif f and z1 and not z2:
+            return 1.0 / (1.0 / abs(f) - 1.0 / abs(z1))
+        else:
+            print("Your input kidding me!")
