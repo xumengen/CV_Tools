@@ -620,5 +620,24 @@ class Tutorail_solver:
                 final_result[i][j] = new_result_image[i][j] // interval
 
         return final_result
+
+    def convolution(self, mask, I, method='inside'):
+        """
+        """
+        mask = np.array(mask)
+        I = np.array(I)
+        assert len(I.shape) == 2
+        mask = np.rot90(mask, 2)
+        if method == 'inside':
+            out_dimension_1 = I.shape[0] - mask.shape[0] + 1
+            out_dimension_2 = I.shape[1] - mask.shape[1] + 1
+        else:
+            pass
+        result_array = np.zeros((out_dimension_1, out_dimension_2))
+        for i in range(out_dimension_1):
+            for j in range(out_dimension_2):
+                result_array[i][j] = np.sum(mask * I[i:i+mask.shape[0], j:j+mask.shape[1]])
+        return result_array
+
         
 

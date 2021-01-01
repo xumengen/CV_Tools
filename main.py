@@ -75,14 +75,22 @@ if __name__ == '__main__':
     # result = solver.compute_3d_point_2d_coordinate([10, 10, 500], [244, 180], [925, 740])
     # print(result)
 
-    ori_imgae = [[[205, 195],
-                  [238, 203]],
-                 [[143, 138],
-                  [166, 143]],
-                 [[154, 145],
-                  [174, 151]],
-    ]
-    result = solver.convert_rbg_to_gray(ori_imgae, 8)
-    print(result)
-    result = solver.convert_rbg_to_gray(ori_imgae, 2)
-    print(result)
+    # ori_imgae = [[[205, 195],
+    #               [238, 203]],
+    #              [[143, 138],
+    #               [166, 143]],
+    #              [[154, 145],
+    #               [174, 151]],
+    # ]
+    # result = solver.convert_rbg_to_gray(ori_imgae, 8)
+    # print(result)
+    # result = solver.convert_rbg_to_gray(ori_imgae, 2)
+    # print(result)
+
+    mask = [[1, 0], [1, 1]]
+    I1 = [[0, 0, 0], [0, 1, 0], [0, 0, 0]]
+    I2 = [[0, 0, 0], [1, 1, 0], [0, 1, 0]]
+    result_1 = solver.convolution(mask, I1)
+    result_2 = solver.convolution(mask, I2)
+    print(result_1)
+    print(result_2)
