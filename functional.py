@@ -581,4 +581,24 @@ class Tutorail_solver:
         elif f and z1 and not z2:
             return 1.0 / (1.0 / abs(f) - 1.0 / abs(z1))
         else:
-            print("Your input kidding me!")
+            print("Your input kidding me!!!")
+
+    def compute_3d_point_2d_coordinate(self, ori_coordinate, image_principal_point, magnification_factors):
+        """
+        """
+        assert len(ori_coordinate) == 3
+        assert len(image_principal_point) == 2
+        assert len(magnification_factors) == 2
+        array_1 = np.array([[magnification_factors[0], 0, image_principal_point[0]],
+                            [0, magnification_factors[1], image_principal_point[1]],
+                            [0, 0, 1]])
+        array_2 = np.array([[1, 0, 0, 0],
+                            [0, 1, 0, 0],
+                            [0, 0, 1, 0]])
+        array_3 = np.array(ori_coordinate+[1.0])
+        result_array = (1 / float(ori_coordinate[-1]) * np.dot(np.dot(array_1, array_2), array_3)).tolist()
+        new_result_array = list()
+        for result in result_array:
+            new_result_array.append(int(round(result)))
+        return new_result_array
+

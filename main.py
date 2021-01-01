@@ -67,7 +67,10 @@ if __name__ == '__main__':
     # output_array = solver.dilation(output_array, 'hv')
     # print(output_array)
 
-    result = solver.compute_thin_lens_equation(f=35, z1=3000, z2=None)
-    print(result)
-    result = solver.compute_thin_lens_equation(f=35, z1=500, z2=None)
+    # result = solver.compute_thin_lens_equation(f=35, z1=3000, z2=None)
+    # print(result)
+    # result = solver.compute_thin_lens_equation(f=35, z1=500, z2=None)
+    # print(result)
+
+    result = solver.compute_3d_point_2d_coordinate([10, 10, 500], [244, 180], [925, 740])
     print(result)
