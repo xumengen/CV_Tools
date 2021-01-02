@@ -631,12 +631,21 @@ class Tutorail_solver:
         if method == 'inside':
             out_dimension_1 = I.shape[0] - mask.shape[0] + 1
             out_dimension_2 = I.shape[1] - mask.shape[1] + 1
-        else:
-            pass
-        result_array = np.zeros((out_dimension_1, out_dimension_2))
-        for i in range(out_dimension_1):
-            for j in range(out_dimension_2):
-                result_array[i][j] = np.sum(mask * I[i:i+mask.shape[0], j:j+mask.shape[1]])
+            result_array = np.zeros((out_dimension_1, out_dimension_2))
+            for i in range(out_dimension_1):
+                for j in range(out_dimension_2):
+                    result_array[i][j] = np.sum(mask * I[i:i+mask.shape[0], j:j+mask.shape[1]])
+        elif method == 'same':
+            out_dimension_1 = I.shape[0]
+            out_dimension_2 = I.shape[1]
+            result_array = np.zeros((out_dimension_1, out_dimension_2))
+            pad_size_1 = (mask.shape[0] - 1) // 2
+            pad_size_2 = (mask.shape[1] - 1) // 2
+            new_I = np.pad(I, ((pad_size_1, pad_size_1), (pad_size_2, pad_size_2)), 'constant', constant_values=(0, 0))
+            for i in range(out_dimension_1):
+                for j in range(out_dimension_2):
+                    result_array[i][j] = np.sum(mask * new_I[i:i+mask.shape[0], j:j+mask.shape[1]])
+        
         return result_array
 
         

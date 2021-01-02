@@ -87,10 +87,19 @@ if __name__ == '__main__':
     # result = solver.convert_rbg_to_gray(ori_imgae, 2)
     # print(result)
 
-    mask = [[1, 0], [1, 1]]
-    I1 = [[0, 0, 0], [0, 1, 0], [0, 0, 0]]
-    I2 = [[0, 0, 0], [1, 1, 0], [0, 1, 0]]
-    result_1 = solver.convolution(mask, I1)
-    result_2 = solver.convolution(mask, I2)
-    print(result_1)
-    print(result_2)
+    # mask = [[1, 0], [1, 1]]
+    # I1 = [[0, 0, 0], [0, 1, 0], [0, 0, 0]]
+    # I2 = [[0, 0, 0], [1, 1, 0], [0, 1, 0]]
+    # result_1 = solver.convolution(mask, I1)
+    # result_2 = solver.convolution(mask, I2)
+    # print(result_1)
+    # print(result_2)
+
+    mask = [[0, 0, 0],
+            [0, 0 ,1],
+            [0, 0, 0]]
+    I = [[0.25, 1, 0.8],
+         [0.75, 1, 1],
+         [0, 1, 0.4]]
+    result = solver.convolution(mask, I, 'same')
+    print(result)
