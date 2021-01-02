@@ -25,8 +25,8 @@ if __name__ == '__main__':
     # result_1, result_2 = solver.compute_segment_moving_object_from_background([patch_1, patch_2, patch_3, patch_4], 50, 0.5)
     # print("the result of image difference is \n{},\nthe result of background substraction is \n{}".format(result_1, result_2))
 
-    print(solver.compute_depth_of_scence_point([50, 50, 0], [25, 50, 1], velocity=0.1, move_method='x-axis', pixel_size=0.1, focal_length=35))
-    print(solver.compute_depth_of_scence_point([50, 70, 0], [45, 63, 1], velocity=0.1, move_method='z-axis',center_coordinate=[100, 140]))
+    # print(solver.compute_depth_of_scence_point([50, 50, 0], [25, 50, 1], velocity=0.1, move_method='x-axis', pixel_size=0.1, focal_length=35))
+    # print(solver.compute_depth_of_scence_point([50, 70, 0], [45, 63, 1], velocity=0.1, move_method='z-axis',center_coordinate=[100, 140]))
 
     # class_list = ['A', 'A', 'B', 'B']
     # feature_vector_list = [[7, 7], [7, 4], [3, 4], [1, 4]]
@@ -124,3 +124,14 @@ if __name__ == '__main__':
     # print(solver.convolution(mask, I, 'same'))
 
     #print(solver.compute_pixel_val_using_gaussian((3, 3), standard_deviation=0.46))
+
+    # tutorial9
+    # template = [[100, 150, 200],
+    #             [150, 10, 200],
+    #             [200, 200, 250]]
+    # I = [[60, 50, 40, 40],
+    #      [150, 100, 100, 80],
+    #      [50, 20, 200, 80],
+    #      [200, 150, 150, 50]]
+    # print(solver.find_object_location(template, I, 'normalised_cross_correlation'))
+    # print(solver.find_object_location(template, I, 'sum_of_absolute_differences'))

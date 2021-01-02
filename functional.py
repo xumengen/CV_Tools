@@ -704,3 +704,39 @@ class Tutorail_solver:
         return result_array
         
 
+    # tutorial9
+    def compute_similarity_using_normalised_cross_correlation(self, array_1, array_2):
+        """
+        """
+        assert array_1.shape == array_2.shape
+        result_1 = np.sum(array_1*array_2)
+        result_2 = np.power(np.sum(np.power(array_1, 2)), 0.5)
+        result_3 = np.power(np.sum(np.power(array_2, 2)), 0.5)
+        return result_1 / (result_2 * result_3)
+
+    def find_object_location(self, template, image, method):
+        """
+        """
+        template = np.array(template)
+        image = np.array(image)
+        assert template.shape[0] == template.shape[1]
+        interval = (template.shape[0] - 1) // 2
+        start = [interval, interval]
+        end =  [image.shape[0] - 1 - start[0], image.shape[1] - 1 - start[1]]
+        if method == 'normalised_cross_correlation':
+            result_array = np.zeros(image.shape)
+            for i in range(start[0], end[0]+1):
+                for j in range(start[1], end[1]+1):
+                    array_1 = template
+                    array_2 = image[i-interval:i+interval+1, j-interval:j+interval+1]
+                    result_array[i][j] = self.compute_similarity_using_normalised_cross_correlation(array_1, array_2)
+            result = np.unravel_index(result_array.argmax(), result_array.shape)
+        if method == 'sum_of_absolute_differences':
+            result_array = np.full(image.shape, fill_value=float('inf'))
+            for i in range(start[0], end[0]+1):
+                for j in range(start[1], end[1]+1):
+                    array_1 = template
+                    array_2 = image[i-interval:i+interval+1, j-interval:j+interval+1]
+                    result_array[i][j] = self.compute_SAD_diff(array_1, array_2)
+            result = np.unravel_index(result_array.argmin(), result_array.shape)
+        return [result[1]+1, result[0]+1]
