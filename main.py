@@ -135,3 +135,20 @@ if __name__ == '__main__':
     #      [200, 150, 150, 50]]
     # print(solver.find_object_location(template, I, 'normalised_cross_correlation'))
     # print(solver.find_object_location(template, I, 'sum_of_absolute_differences'))
+
+    template_1 = [[1, 1, 1],
+                  [1, 0, 0],
+                  [1, 1, 1]]
+    template_2 = [[1, 0, 0],
+                  [1, 0, 0],
+                  [1, 1, 1]]
+    template_3 = [[1, 1, 1],
+                  [1, 0, 1],
+                  [1, 1, 1]]
+    image = [[1, 1, 1],
+             [1, 0, 0],
+             [1, 1, 1]]
+    print(solver.best_template_match([template_1, template_2, template_3], image, method='cross_correlation'))
+    print(solver.best_template_match([template_1, template_2, template_3], image, method='normalised_cross_correlation'))
+    print(solver.best_template_match([template_1, template_2, template_3], image, method='correlation_coefficient'))
+    print(solver.best_template_match([template_1, template_2, template_3], image, method='SAD'))

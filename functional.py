@@ -713,6 +713,24 @@ class Tutorail_solver:
         result_2 = np.power(np.sum(np.power(array_1, 2)), 0.5)
         result_3 = np.power(np.sum(np.power(array_2, 2)), 0.5)
         return result_1 / (result_2 * result_3)
+    
+    def compute_similarity_using_cross_correlation(self, array_1, array_2):
+        """
+        """
+        assert array_1.shape == array_2.shape
+        return np.sum(array_1*array_2)
+    
+    def compute_similarity_using_correlation_coefficient(self, array_1, array_2):
+        """
+        """
+        assert array_1.shape == array_2.shape
+        array_1 = array_1 - np.mean(array_1)
+        array_2 = array_2 - np.mean(array_2)
+        result_1 = np.sum(array_1*array_2)
+        result_2 = np.power(np.sum(np.power(array_1, 2)), 0.5)
+        result_3 = np.power(np.sum(np.power(array_2, 2)), 0.5)
+        return result_1 / (result_2 * result_3)
+
 
     def find_object_location(self, template, image, method):
         """
@@ -740,3 +758,48 @@ class Tutorail_solver:
                     result_array[i][j] = self.compute_SAD_diff(array_1, array_2)
             result = np.unravel_index(result_array.argmin(), result_array.shape)
         return [result[1]+1, result[0]+1]
+
+    def best_template_match(self, template_list, image, method):
+        """
+        """
+        image = np.array(image)
+        if method == 'cross_correlation':
+            result_list = []
+            for template in template_list:
+                result_list.append(round(self.compute_similarity_using_cross_correlation(np.array(template), image), 2))
+            max_value = max(result_list)
+            final_result_list = []
+            for idx, val in enumerate(result_list):
+                if val == max_value:
+                    final_result_list.append(idx+1)
+            return final_result_list
+        elif method == 'normalised_cross_correlation':
+            result_list = []
+            for template in template_list:
+                result_list.append(round(self.compute_similarity_using_normalised_cross_correlation(np.array(template), image), 2))
+            max_value = max(result_list)
+            final_result_list = []
+            for idx, val in enumerate(result_list):
+                if val == max_value:
+                    final_result_list.append(idx+1)
+            return final_result_list
+        elif method == 'correlation_coefficient':
+            result_list = []
+            for template in template_list:
+                result_list.append(round(self.compute_similarity_using_correlation_coefficient(np.array(template), image), 2))
+            max_value = max(result_list)
+            final_result_list = []
+            for idx, val in enumerate(result_list):
+                if val == max_value:
+                    final_result_list.append(idx+1)
+            return final_result_list
+        elif method == 'SAD':
+            result_list = []
+            for template in template_list:
+                result_list.append(round(self.compute_SAD_diff(np.array(template), image), 2))
+            min_value = min(result_list)
+            final_result_list = []
+            for idx, val in enumerate(result_list):
+                if val == min_value:
+                    final_result_list.append(idx+1)
+            return final_result_list
