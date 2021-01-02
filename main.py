@@ -25,6 +25,9 @@ if __name__ == '__main__':
     # result_1, result_2 = solver.compute_segment_moving_object_from_background([patch_1, patch_2, patch_3, patch_4], 50, 0.5)
     # print("the result of image difference is \n{},\nthe result of background substraction is \n{}".format(result_1, result_2))
 
+    print(solver.compute_depth_of_scence_point([50, 50, 0], [25, 50, 1], velocity=0.1, move_method='x-axis', pixel_size=0.1, focal_length=35))
+    print(solver.compute_depth_of_scence_point([50, 70, 0], [45, 63, 1], velocity=0.1, move_method='z-axis',center_coordinate=[100, 140]))
+
     # class_list = ['A', 'A', 'B', 'B']
     # feature_vector_list = [[7, 7], [7, 4], [3, 4], [1, 4]]
     # object_feature_vector = [3, 7]
@@ -67,13 +70,13 @@ if __name__ == '__main__':
     # output_array = solver.dilation(output_array, 'hv')
     # print(output_array)
 
-    image_region = [[1, 0, 0, 1],
-                    [0, 1, 0, 0],
-                    [0, 0, 1, 0]]
-    theta_1 = [0, 45, 90, 135]
-    theta_2 = [0, 30, 60, 90, 120, 150]
-    print(solver.hough_transform(image_region, theta_1))
-    print(solver.hough_transform(image_region, theta_2))
+    # image_region = [[1, 0, 0, 1],
+    #                 [0, 1, 0, 0],
+    #                 [0, 0, 1, 0]]
+    # theta_1 = [0, 45, 90, 135]
+    # theta_2 = [0, 30, 60, 90, 120, 150]
+    # print(solver.hough_transform(image_region, theta_1))
+    # print(solver.hough_transform(image_region, theta_2))
 
     # result = solver.compute_thin_lens_equation(f=35, z1=3000, z2=None)
     # print(result)

@@ -83,6 +83,21 @@ class Tutorail_solver:
             # return np.concatenate((result_1, result_2), axis=0)
             return result_1, result_2
 
+    def compute_depth_of_scence_point(self, frame_1_point, frame_2_point, velocity, move_method='x-axis', pixel_size=None, focal_length=None, center_coordinate=None):
+        """
+        """
+        if move_method == 'x-axis':
+            assert focal_length
+            assert pixel_size
+            v_p = (frame_2_point[0]- frame_1_point[0]) / (frame_2_point[2] - frame_1_point[2]) * pixel_size
+            return -focal_length * velocity / v_p
+        elif move_method == 'z-axis':
+            assert center_coordinate
+            frame_1_point[0] = frame_1_point[0] - center_coordinate[0]
+            frame_2_point[0] = frame_2_point[0] - center_coordinate[0]
+            v_p = (frame_2_point[0] - frame_1_point[0]) / (frame_2_point[2] - frame_1_point[2])
+            return frame_1_point[0] * velocity / v_p
+
     def compute_object_class(self, class_list, feature_vector_list, object_feature_vector, k):
         """ compute the category of the object
     
