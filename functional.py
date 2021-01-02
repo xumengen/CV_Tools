@@ -17,6 +17,7 @@ class Tutorail_solver:
     def __init__(self):
         pass
  
+    # tutorial 7_5
     def compute_distance_between_point_and_horopter(self, baseline_length, angle_z_baseline, a_l, a_r):
         """ compute the distance between the point and the horopter
         
@@ -41,6 +42,7 @@ class Tutorail_solver:
         distance_point_and_baseline = 0.5 * baseline_length * tan(angle_2)
         return round(abs(distance_point_and_baseline - distance_fix_and_baseline), 3)
     
+    # tutorial 8_5
     def compute_segment_moving_object_from_background(self, pixel_patches, thres, beta, method='both'):
         """ segment the moving object from background
      
@@ -83,6 +85,23 @@ class Tutorail_solver:
             # return np.concatenate((result_1, result_2), axis=0)
             return result_1, result_2
 
+    # tutorial 8_4
+    def compute_depth_of_scence_point(self, frame_1_point, frame_2_point, velocity, move_method='x-axis', pixel_size=None, focal_length=None, center_coordinate=None):
+        """
+        """
+        if move_method == 'x-axis':
+            assert focal_length
+            assert pixel_size
+            v_p = (frame_2_point[0]- frame_1_point[0]) / (frame_2_point[2] - frame_1_point[2]) * pixel_size
+            return -focal_length * velocity / v_p
+        elif move_method == 'z-axis':
+            assert center_coordinate
+            frame_1_point[0] = frame_1_point[0] - center_coordinate[0]
+            frame_2_point[0] = frame_2_point[0] - center_coordinate[0]
+            v_p = (frame_2_point[0] - frame_1_point[0]) / (frame_2_point[2] - frame_1_point[2])
+            return frame_1_point[0] * velocity / v_p
+
+    # tutorial 10_4
     def compute_object_class(self, class_list, feature_vector_list, object_feature_vector, k):
         """ compute the category of the object
     
@@ -151,6 +170,7 @@ class Tutorail_solver:
         """
         return np.sum(np.absolute(array1 - array2))
 
+    # tutorial 6_4
     def compute_similarity_between_point_and_image(self, coordinate, left_image, right_image, k=3):
         """
         """
@@ -168,6 +188,7 @@ class Tutorail_solver:
                 result_array[i][j] = val
         return result_array
    
+    # tutorial 6_9
     def compute_harris_corner_detector(self, Ix, Iy, k=0.05, length=3):
         """
         """
@@ -200,6 +221,7 @@ class Tutorail_solver:
                 result_array[i][j] = np.sum(pad_array_1[i:length+i, j:length+j] * pad_array_2[i:length+i, j:length+j])
         return result_array
         
+    # tutorial 5_6
     def region_growing(self, feature_vector_array, method='SAD', thres=12, mode='hvd', start=(0,0)):
         """
         """
@@ -297,6 +319,7 @@ class Tutorail_solver:
                     result_list.append(coordinate)
         return np.array(result_list)
 
+    # region 5_8
     def region_merge(self, feature_vector_array, method='SAD', thres=12, mode='hvd', start=(0,0), result_array=[]):  
         """
         """
@@ -334,6 +357,7 @@ class Tutorail_solver:
         return result_array
 
     # TODO change 3*3 to n*n
+    # tutorial 5_10
     def region_split_and_merge(self, feature_vector_array, method='SAD', thres=12, mode='hvd', start=(0, 0)):
         """
         """
@@ -428,6 +452,7 @@ class Tutorail_solver:
         print("the result of region split and merge is\n {}\n".format(result_array))
         return result_array
 
+    # tutorial 5_12
     def k_means(self, feature_vector_array, k, ori_feature_vetor_array, method='SAD'):
         """
     
@@ -464,6 +489,7 @@ class Tutorail_solver:
         return result_array
 
     # TODO add other cluster method
+    # tutorial 5_15
     def agglomerative_hierarchical_clustering(self, feature_vector_array, k=3, method='SAD', cluster_method='centroid'):
         """
         """
@@ -533,6 +559,7 @@ class Tutorail_solver:
         print("the result of agglomerative hierarchical clustering is\n {}\n".format(record_list))
         return record_list
 
+    # tutorial 5_4
     def dilation(self, input_array, mode):
         """
         """
@@ -551,6 +578,7 @@ class Tutorail_solver:
                     output_array[i][j] = input_array[i][j]
         return output_array
 
+    # tutorial 5_4
     def erosion(self, input_array, mode):
         """
         """
@@ -568,3 +596,229 @@ class Tutorail_solver:
                 else:
                     output_array[i][j] = input_array[i][j]
         return output_array
+
+    # tutorial 5_18
+    def hough_transform(self, image_region, theta):
+        """
+        """
+        image_region_array = np.array(image_region)
+        assert len(image_region_array.shape) == 2
+        row = image_region_array.shape[0]-1
+        column = image_region_array.shape[1]-1
+        r = int(math.ceil(math.pow(row**2+column**2, 0.5)))
+        r_list = [-i for i in range(1, r+1)] + [i for i in range(r+1)]
+        accu_array = np.zeros((2*r+1, len(theta)))
+        edge_pixel_index = np.where(image_region_array==1)
+        for i in range(len(edge_pixel_index[0])):
+            for tdx, t in enumerate(theta):
+                y = edge_pixel_index[0][i]
+                x = edge_pixel_index[1][i]
+                t_r = math.radians(t)
+                result = y * math.cos(t_r) - x * math.sin(t_r)
+                if abs((2*math.ceil(result)-1) / 2 - result) < 1e-8:
+                    result = int(math.ceil(result)-1)
+                else:
+                    result = int(round(result))
+                accu_array[r-result][tdx] += 1
+        return accu_array
+
+    # tutorial 2_7
+    def compute_thin_lens_equation(self, f=None, z1=None, z2=None):
+        """
+        thin lens equation: 1/f = 1/z1 + 1/z2
+        """
+        assert f > 0
+        if not f and z1 and z2:
+            return 1.0 / (1.0 / abs(z1) + 1.0 / abs(z2))
+        elif f and not z1 and z2:
+            return 1.0 / (1.0 / abs(f) - 1.0 / abs(z2))
+        elif f and z1 and not z2:
+            return 1.0 / (1.0 / abs(f) - 1.0 / abs(z1))
+        else:
+            print("Your input kidding me!!!")
+
+    # tutorial 2_11
+    def compute_3d_point_2d_coordinate(self, ori_coordinate, image_principal_point, magnification_factors):
+        """
+        """
+        assert len(ori_coordinate) == 3
+        assert len(image_principal_point) == 2
+        assert len(magnification_factors) == 2
+        array_1 = np.array([[magnification_factors[0], 0, image_principal_point[0]],
+                            [0, magnification_factors[1], image_principal_point[1]],
+                            [0, 0, 1]])
+        array_2 = np.array([[1, 0, 0, 0],
+                            [0, 1, 0, 0],
+                            [0, 0, 1, 0]])
+        array_3 = np.array(ori_coordinate+[1.0])
+        result_array = (1 / float(ori_coordinate[-1]) * np.dot(np.dot(array_1, array_2), array_3)).tolist()
+        new_result_array = list()
+        for result in result_array:
+            new_result_array.append(int(round(result)))
+        return new_result_array
+
+    def convert_rbg_to_gray(self, ori_image, bit=8):
+        """
+        """
+        assert len(ori_image) == 3
+        ori_image_array = np.array(ori_image)
+        result_image = np.mean(ori_image_array, axis=0)
+        new_result_image = np.zeros(result_image.shape)
+        for i in range(result_image.shape[0]):
+            for j in range(result_image.shape[1]):
+                new_result_image[i][j] = int(round(result_image[i][j]))
+        
+        interval = (2 ** 8) / (2 ** bit)
+        final_result = np.zeros(new_result_image.shape)
+        for i in range(new_result_image.shape[0]):
+            for j in range(new_result_image.shape[1]):
+                final_result[i][j] = new_result_image[i][j] // interval
+
+        return final_result
+
+    # tutorial 3_1
+    def convolution(self, mask, I, method='inside'):
+        """
+        """
+        mask = np.array(mask)
+        I = np.array(I)
+        assert len(I.shape) == 2
+        mask = np.rot90(mask, 2)
+        if method == 'inside':
+            out_dimension_1 = I.shape[0] - mask.shape[0] + 1
+            out_dimension_2 = I.shape[1] - mask.shape[1] + 1
+            result_array = np.zeros((out_dimension_1, out_dimension_2))
+            for i in range(out_dimension_1):
+                for j in range(out_dimension_2):
+                    result_array[i][j] = np.sum(mask * I[i:i+mask.shape[0], j:j+mask.shape[1]])
+        elif method == 'same':
+            assert mask.shape[0] % 2 != 0
+            assert mask.shape[1] % 2 != 0
+            out_dimension_1 = I.shape[0]
+            out_dimension_2 = I.shape[1]
+            result_array = np.zeros((out_dimension_1, out_dimension_2))
+            pad_size_1 = (mask.shape[0] - 1) // 2
+            pad_size_2 = (mask.shape[1] - 1) // 2
+            new_I = np.pad(I, ((pad_size_1, pad_size_1), (pad_size_2, pad_size_2)), 'constant', constant_values=(0, 0))
+            for i in range(out_dimension_1):
+                for j in range(out_dimension_2):
+                    result_array[i][j] = np.sum(mask * new_I[i:i+mask.shape[0], j:j+mask.shape[1]])
+        
+        return result_array
+
+    # tutorial 3_9
+    def compute_pixel_val_using_gaussian(self, array_size, standard_deviation, decimal=2):
+        """
+        """
+        assert len(array_size) == 2
+        assert array_size[0] == array_size[1]
+        shift = (array_size[0] - 1) // 2
+        result_array = np.zeros(array_size)
+        for i in range(array_size[0]):
+            for j in range(array_size[1]):
+                x = i - shift
+                y = j - shift
+                result_array[i][j] = round(math.exp(-(x**2+y**2)/(2*standard_deviation**2)) / (2*math.pi*(standard_deviation**2)), decimal)
+        return result_array
+        
+
+    # tutorial9
+    def compute_similarity_using_normalised_cross_correlation(self, array_1, array_2):
+        """
+        """
+        assert array_1.shape == array_2.shape
+        result_1 = np.sum(array_1*array_2)
+        result_2 = np.power(np.sum(np.power(array_1, 2)), 0.5)
+        result_3 = np.power(np.sum(np.power(array_2, 2)), 0.5)
+        return result_1 / (result_2 * result_3)
+    
+    def compute_similarity_using_cross_correlation(self, array_1, array_2):
+        """
+        """
+        assert array_1.shape == array_2.shape
+        return np.sum(array_1*array_2)
+    
+    def compute_similarity_using_correlation_coefficient(self, array_1, array_2):
+        """
+        """
+        assert array_1.shape == array_2.shape
+        array_1 = array_1 - np.mean(array_1)
+        array_2 = array_2 - np.mean(array_2)
+        result_1 = np.sum(array_1*array_2)
+        result_2 = np.power(np.sum(np.power(array_1, 2)), 0.5)
+        result_3 = np.power(np.sum(np.power(array_2, 2)), 0.5)
+        return result_1 / (result_2 * result_3)
+
+    # tutorial 9_1
+    def find_object_location(self, template, image, method):
+        """
+        """
+        template = np.array(template)
+        image = np.array(image)
+        assert template.shape[0] == template.shape[1]
+        interval = (template.shape[0] - 1) // 2
+        start = [interval, interval]
+        end =  [image.shape[0] - 1 - start[0], image.shape[1] - 1 - start[1]]
+        if method == 'normalised_cross_correlation':
+            result_array = np.zeros(image.shape)
+            for i in range(start[0], end[0]+1):
+                for j in range(start[1], end[1]+1):
+                    array_1 = template
+                    array_2 = image[i-interval:i+interval+1, j-interval:j+interval+1]
+                    result_array[i][j] = self.compute_similarity_using_normalised_cross_correlation(array_1, array_2)
+            result = np.unravel_index(result_array.argmax(), result_array.shape)
+        if method == 'sum_of_absolute_differences':
+            result_array = np.full(image.shape, fill_value=float('inf'))
+            for i in range(start[0], end[0]+1):
+                for j in range(start[1], end[1]+1):
+                    array_1 = template
+                    array_2 = image[i-interval:i+interval+1, j-interval:j+interval+1]
+                    result_array[i][j] = self.compute_SAD_diff(array_1, array_2)
+            result = np.unravel_index(result_array.argmin(), result_array.shape)
+        return [result[1]+1, result[0]+1]
+
+    # tutorial 9_3
+    def best_template_match(self, template_list, image, method):
+        """
+        """
+        image = np.array(image)
+        if method == 'cross_correlation':
+            result_list = []
+            for template in template_list:
+                result_list.append(round(self.compute_similarity_using_cross_correlation(np.array(template), image), 2))
+            max_value = max(result_list)
+            final_result_list = []
+            for idx, val in enumerate(result_list):
+                if val == max_value:
+                    final_result_list.append(idx+1)
+            return final_result_list
+        elif method == 'normalised_cross_correlation':
+            result_list = []
+            for template in template_list:
+                result_list.append(round(self.compute_similarity_using_normalised_cross_correlation(np.array(template), image), 2))
+            max_value = max(result_list)
+            final_result_list = []
+            for idx, val in enumerate(result_list):
+                if val == max_value:
+                    final_result_list.append(idx+1)
+            return final_result_list
+        elif method == 'correlation_coefficient':
+            result_list = []
+            for template in template_list:
+                result_list.append(round(self.compute_similarity_using_correlation_coefficient(np.array(template), image), 2))
+            max_value = max(result_list)
+            final_result_list = []
+            for idx, val in enumerate(result_list):
+                if val == max_value:
+                    final_result_list.append(idx+1)
+            return final_result_list
+        elif method == 'SAD':
+            result_list = []
+            for template in template_list:
+                result_list.append(round(self.compute_SAD_diff(np.array(template), image), 2))
+            min_value = min(result_list)
+            final_result_list = []
+            for idx, val in enumerate(result_list):
+                if val == min_value:
+                    final_result_list.append(idx+1)
+            return final_result_list
