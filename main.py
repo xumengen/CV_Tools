@@ -136,19 +136,25 @@ if __name__ == '__main__':
     # print(solver.find_object_location(template, I, 'normalised_cross_correlation'))
     # print(solver.find_object_location(template, I, 'sum_of_absolute_differences'))
 
-    template_1 = [[1, 1, 1],
-                  [1, 0, 0],
-                  [1, 1, 1]]
-    template_2 = [[1, 0, 0],
-                  [1, 0, 0],
-                  [1, 1, 1]]
-    template_3 = [[1, 1, 1],
-                  [1, 0, 1],
-                  [1, 1, 1]]
-    image = [[1, 1, 1],
-             [1, 0, 0],
-             [1, 1, 1]]
-    print(solver.best_template_match([template_1, template_2, template_3], image, method='cross_correlation'))
-    print(solver.best_template_match([template_1, template_2, template_3], image, method='normalised_cross_correlation'))
-    print(solver.best_template_match([template_1, template_2, template_3], image, method='correlation_coefficient'))
-    print(solver.best_template_match([template_1, template_2, template_3], image, method='SAD'))
+    # template_1 = [[1, 1, 1],
+    #               [1, 0, 0],
+    #               [1, 1, 1]]
+    # template_2 = [[1, 0, 0],
+    #               [1, 0, 0],
+    #               [1, 1, 1]]
+    # template_3 = [[1, 1, 1],
+    #               [1, 0, 1],
+    #               [1, 1, 1]]
+    # image = [[1, 1, 1],
+    #          [1, 0, 0],
+    #          [1, 1, 1]]
+    # print(solver.best_template_match([template_1, template_2, template_3], image, method='cross_correlation'))
+    # print(solver.best_template_match([template_1, template_2, template_3], image, method='normalised_cross_correlation'))
+    # print(solver.best_template_match([template_1, template_2, template_3], image, method='correlation_coefficient'))
+    # print(solver.best_template_match([template_1, template_2, template_3], image, method='SAD'))
+
+    image_1 = [2,0,0,5,1,0,0,0,3,1]
+    image_2 = [0,0,1,2,0,3,1,0,1,0]
+    image_3 = [1,1,2,0,0,1,0,3,1,1]
+    new_image = [2,1,1,0,1,1,0,2,0,1]
+    print(solver.best_template_match([image_1, image_2, image_3], new_image, method='normalised_cross_correlation'))

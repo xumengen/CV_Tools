@@ -17,6 +17,7 @@ class Tutorail_solver:
     def __init__(self):
         pass
  
+    # tutorial 7_5
     def compute_distance_between_point_and_horopter(self, baseline_length, angle_z_baseline, a_l, a_r):
         """ compute the distance between the point and the horopter
         
@@ -41,6 +42,7 @@ class Tutorail_solver:
         distance_point_and_baseline = 0.5 * baseline_length * tan(angle_2)
         return round(abs(distance_point_and_baseline - distance_fix_and_baseline), 3)
     
+    # tutorial 8_5
     def compute_segment_moving_object_from_background(self, pixel_patches, thres, beta, method='both'):
         """ segment the moving object from background
      
@@ -83,6 +85,7 @@ class Tutorail_solver:
             # return np.concatenate((result_1, result_2), axis=0)
             return result_1, result_2
 
+    # tutorial 8_4
     def compute_depth_of_scence_point(self, frame_1_point, frame_2_point, velocity, move_method='x-axis', pixel_size=None, focal_length=None, center_coordinate=None):
         """
         """
@@ -98,6 +101,7 @@ class Tutorail_solver:
             v_p = (frame_2_point[0] - frame_1_point[0]) / (frame_2_point[2] - frame_1_point[2])
             return frame_1_point[0] * velocity / v_p
 
+    # tutorial 10_4
     def compute_object_class(self, class_list, feature_vector_list, object_feature_vector, k):
         """ compute the category of the object
     
@@ -166,6 +170,7 @@ class Tutorail_solver:
         """
         return np.sum(np.absolute(array1 - array2))
 
+    # tutorial 6_4
     def compute_similarity_between_point_and_image(self, coordinate, left_image, right_image, k=3):
         """
         """
@@ -183,6 +188,7 @@ class Tutorail_solver:
                 result_array[i][j] = val
         return result_array
    
+    # tutorial 6_9
     def compute_harris_corner_detector(self, Ix, Iy, k=0.05, length=3):
         """
         """
@@ -215,6 +221,7 @@ class Tutorail_solver:
                 result_array[i][j] = np.sum(pad_array_1[i:length+i, j:length+j] * pad_array_2[i:length+i, j:length+j])
         return result_array
         
+    # tutorial 5_6
     def region_growing(self, feature_vector_array, method='SAD', thres=12, mode='hvd', start=(0,0)):
         """
         """
@@ -312,6 +319,7 @@ class Tutorail_solver:
                     result_list.append(coordinate)
         return np.array(result_list)
 
+    # region 5_8
     def region_merge(self, feature_vector_array, method='SAD', thres=12, mode='hvd', start=(0,0), result_array=[]):  
         """
         """
@@ -349,6 +357,7 @@ class Tutorail_solver:
         return result_array
 
     # TODO change 3*3 to n*n
+    # tutorial 5_10
     def region_split_and_merge(self, feature_vector_array, method='SAD', thres=12, mode='hvd', start=(0, 0)):
         """
         """
@@ -443,6 +452,7 @@ class Tutorail_solver:
         print("the result of region split and merge is\n {}\n".format(result_array))
         return result_array
 
+    # tutorial 5_12
     def k_means(self, feature_vector_array, k, ori_feature_vetor_array, method='SAD'):
         """
     
@@ -479,6 +489,7 @@ class Tutorail_solver:
         return result_array
 
     # TODO add other cluster method
+    # tutorial 5_15
     def agglomerative_hierarchical_clustering(self, feature_vector_array, k=3, method='SAD', cluster_method='centroid'):
         """
         """
@@ -548,6 +559,7 @@ class Tutorail_solver:
         print("the result of agglomerative hierarchical clustering is\n {}\n".format(record_list))
         return record_list
 
+    # tutorial 5_4
     def dilation(self, input_array, mode):
         """
         """
@@ -566,6 +578,7 @@ class Tutorail_solver:
                     output_array[i][j] = input_array[i][j]
         return output_array
 
+    # tutorial 5_4
     def erosion(self, input_array, mode):
         """
         """
@@ -584,6 +597,7 @@ class Tutorail_solver:
                     output_array[i][j] = input_array[i][j]
         return output_array
 
+    # tutorial 5_18
     def hough_transform(self, image_region, theta):
         """
         """
@@ -608,6 +622,7 @@ class Tutorail_solver:
                 accu_array[r-result][tdx] += 1
         return accu_array
 
+    # tutorial 2_7
     def compute_thin_lens_equation(self, f=None, z1=None, z2=None):
         """
         thin lens equation: 1/f = 1/z1 + 1/z2
@@ -622,6 +637,7 @@ class Tutorail_solver:
         else:
             print("Your input kidding me!!!")
 
+    # tutorial 2_11
     def compute_3d_point_2d_coordinate(self, ori_coordinate, image_principal_point, magnification_factors):
         """
         """
@@ -660,6 +676,7 @@ class Tutorail_solver:
 
         return final_result
 
+    # tutorial 3_1
     def convolution(self, mask, I, method='inside'):
         """
         """
@@ -689,6 +706,7 @@ class Tutorail_solver:
         
         return result_array
 
+    # tutorial 3_9
     def compute_pixel_val_using_gaussian(self, array_size, standard_deviation, decimal=2):
         """
         """
@@ -731,7 +749,7 @@ class Tutorail_solver:
         result_3 = np.power(np.sum(np.power(array_2, 2)), 0.5)
         return result_1 / (result_2 * result_3)
 
-
+    # tutorial 9_1
     def find_object_location(self, template, image, method):
         """
         """
@@ -759,6 +777,7 @@ class Tutorail_solver:
             result = np.unravel_index(result_array.argmin(), result_array.shape)
         return [result[1]+1, result[0]+1]
 
+    # tutorial 9_3
     def best_template_match(self, template_list, image, method):
         """
         """
