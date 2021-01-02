@@ -636,6 +636,8 @@ class Tutorail_solver:
                 for j in range(out_dimension_2):
                     result_array[i][j] = np.sum(mask * I[i:i+mask.shape[0], j:j+mask.shape[1]])
         elif method == 'same':
+            assert mask.shape[0] % 2 != 0
+            assert mask.shape[1] % 2 != 0
             out_dimension_1 = I.shape[0]
             out_dimension_2 = I.shape[1]
             result_array = np.zeros((out_dimension_1, out_dimension_2))
@@ -648,5 +650,18 @@ class Tutorail_solver:
         
         return result_array
 
+    def compute_pixel_val_using_gaussian(self, array_size, standard_deviation, decimal=2):
+        """
+        """
+        assert len(array_size) == 2
+        assert array_size[0] == array_size[1]
+        shift = (array_size[0] - 1) // 2
+        result_array = np.zeros(array_size)
+        for i in range(array_size[0]):
+            for j in range(array_size[1]):
+                x = i - shift
+                y = j - shift
+                result_array[i][j] = round(math.exp(-(x**2+y**2)/(2*standard_deviation**2)) / (2*math.pi*(standard_deviation**2)), decimal)
+        return result_array
         
 
