@@ -569,6 +569,30 @@ class Tutorail_solver:
                     output_array[i][j] = input_array[i][j]
         return output_array
 
+    def hough_transform(self, image_region, theta):
+        """
+        """
+        image_region_array = np.array(image_region)
+        assert len(image_region_array.shape) == 2
+        row = image_region_array.shape[0]-1
+        column = image_region_array.shape[1]-1
+        r = int(math.ceil(math.pow(row**2+column**2, 0.5)))
+        r_list = [-i for i in range(1, r+1)] + [i for i in range(r+1)]
+        accu_array = np.zeros((2*r+1, len(theta)))
+        edge_pixel_index = np.where(image_region_array==1)
+        for i in range(len(edge_pixel_index[0])):
+            for tdx, t in enumerate(theta):
+                y = edge_pixel_index[0][i]
+                x = edge_pixel_index[1][i]
+                t_r = math.radians(t)
+                result = y * math.cos(t_r) - x * math.sin(t_r)
+                if abs((2*math.ceil(result)-1) / 2 - result) < 1e-8:
+                    result = int(math.ceil(result)-1)
+                else:
+                    result = int(round(result))
+                accu_array[r-result][tdx] += 1
+        return accu_array
+
     def compute_thin_lens_equation(self, f=None, z1=None, z2=None):
         """
         thin lens equation: 1/f = 1/z1 + 1/z2

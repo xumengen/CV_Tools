@@ -67,6 +67,14 @@ if __name__ == '__main__':
     # output_array = solver.dilation(output_array, 'hv')
     # print(output_array)
 
+    image_region = [[1, 0, 0, 1],
+                    [0, 1, 0, 0],
+                    [0, 0, 1, 0]]
+    theta_1 = [0, 45, 90, 135]
+    theta_2 = [0, 30, 60, 90, 120, 150]
+    print(solver.hough_transform(image_region, theta_1))
+    print(solver.hough_transform(image_region, theta_2))
+
     # result = solver.compute_thin_lens_equation(f=35, z1=3000, z2=None)
     # print(result)
     # result = solver.compute_thin_lens_equation(f=35, z1=500, z2=None)
@@ -112,4 +120,4 @@ if __name__ == '__main__':
     #      [1, 1, 1]]
     # print(solver.convolution(mask, I, 'same'))
 
-    print(solver.compute_pixel_val_using_gaussian((3, 3), standard_deviation=0.46))
+    #print(solver.compute_pixel_val_using_gaussian((3, 3), standard_deviation=0.46))
