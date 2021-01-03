@@ -491,9 +491,9 @@ class Tutorail_solver:
                         dist_list.append(self.compute_SAD_diff(feature_vector, ori_feature_vetor_array[m]))
                     label = dist_list.index(min(dist_list)) + 1
                     result_array[i][j] = label
+            print("the result of {}-th step is\n {}\n".format(count, result_array))
             if (result_array_copy == result_array).all():
                 break
-            print("the result of {}-th step is\n {}\n".format(count, result_array))
             count += 1
             ori_feature_vetor_array = compute_new_cluster_center()
 
@@ -669,6 +669,7 @@ class Tutorail_solver:
             new_result_array.append(round(result, decimal))
         return new_result_array
 
+    # tutorial 2_12
     def convert_rbg_to_gray(self, ori_image, bit=8):
         """
         """
@@ -837,6 +838,17 @@ class Tutorail_solver:
                     result_array[i][j] = self.compute_min_dist(array_1, array_2)
             print("the template result of pixel in image is\n {}\n".format(result_array))
             result = np.unravel_index(result_array.argmin(), result_array.shape)
+    
+        elif method == 'eucli_distance':
+            result_array = np.full(image.shape, fill_value=float('inf'))
+            for i in range(start[0], end[0]+1):
+                for j in range(start[1], end[1]+1):
+                    array_1 = template
+                    array_2 = image[i-interval:i+interval+1, j-interval:j+interval+1]
+                    result_array[i][j] = self.compute_eucli_distance(array_1, array_2)
+            print("the template result of pixel in image is\n {}\n".format(result_array))
+            result = np.unravel_index(result_array.argmin(), result_array.shape)
+        
         return [result[1]+1, result[0]+1]
 
     # tutorial 9_3
@@ -918,3 +930,5 @@ class Tutorail_solver:
         print(dist_1_3, dist_2_4, dist_1_4, dist_2_3)
         cross_ratio = round((dist_1_3 * dist_2_4) / (dist_1_4 * dist_2_3))
         return cross_ratio
+    
+    def 

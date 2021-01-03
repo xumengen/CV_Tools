@@ -36,9 +36,19 @@ if __name__ == '__main__':
     
     # left_image = [[4, 7, 6, 7], [3, 4, 5, 4], [8, 7, 6, 8]]
     # right_image = [[7, 6, 7, 5], [4, 5, 4, 5], [7, 6, 8, 7]]
-    # coordinate = [2, 3]
-    # result = solver.compute_similarity_between_point_and_image(coordinate, left_image, right_image)
-    # print(result)
+    left_image = [[9, 3, 6, 2, 3], 
+                  [9, 8, 7, 7, 6], 
+                  [5, 0, 6, 1, 7],
+                  [0, 0, 4, 6, 0],
+                  [2, 1, 5, 1, 9]]
+    right_image = [[2, 9, 0, 2, 2], 
+                   [6, 7, 7, 6, 3], 
+                   [0, 6, 0, 0, 4],
+                   [0, 2, 6, 2, 5],
+                   [3, 0, 5, 1, 0]]
+    coordinate = [3, 3]
+    result = solver.compute_similarity_between_point_and_image(coordinate, left_image, right_image)
+    print(result)
 
     # Ix = [[1, 0, 0, 0, 0], [-1, 1, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 0, 0, 0]]
     # Iy = [[1, -1, 0, 0, 0], [-1, 0, -1, 0, 0], [1, 1, 1, 0, 0], [0, 0, 0, 0, 0]]
@@ -62,9 +72,12 @@ if __name__ == '__main__':
     #                [0, 0, 0, 0, 0, 0, 0, 0, 0],
     #                [0, 0, 0, 0, 0, 0, 0, 0, 0],]
 
-    # output_array = solver.dilation(input_array, 'hvd')
+    # input_array = [[1, 1, 0],
+    #                [1, 0 ,1],
+    #                [0, 0, 0]]
+    # output_array = solver.dilation(input_array, 'hv')
     # print(output_array)
-    # output_array = solver.erosion(output_array, 'hvd')
+    # output_array = solver.erosion(output_array, 'hv')
     # print(output_array)
 
     # output_array = solver.erosion(input_array, 'hv')
@@ -179,20 +192,20 @@ if __name__ == '__main__':
 
     # print(solver.compute_z_from_two_coplanar_camera(f=30, B=400, pixel_size=0.1, left_coordinate=(231,345), right_coordinate=(45, 345), decimal=0, coplanar='x-axis'))
 
-    A = [[0, 1, 0, 0],
-         [1, 0 ,0, 0],
-         [0, 1, 0, 1],
-         [1, 0, 1, 0]]
+    # A = [[0, 1, 0, 0],
+    #      [1, 0 ,0, 0],
+    #      [0, 1, 0, 1],
+    #      [1, 0, 1, 0]]
 
-    B = [[0, 0, 0, 0],
-         [1, 0 ,1, 0],
-         [1, 1, 1, 0],
-         [0, 1, 0, 0]]
+    # B = [[0, 0, 0, 0],
+    #      [1, 0 ,1, 0],
+    #      [1, 1, 1, 0],
+    #      [0, 1, 0, 0]]
 
-    C = [[0, 0, 0, 0],
-         [0, 0 ,0, 0],
-         [0, 1, 0, 1],
-         [0, 1, 1, 1]]
-    solver.best_template_match([A], B, method='all', decimal=4)
-    solver.best_template_match([A], C, method='all', decimal=4)
-    solver.best_template_match([B], C, method='all', decimal=4)
+    # C = [[0, 0, 0, 0],
+    #      [0, 0 ,0, 0],
+    #      [0, 1, 0, 1],
+    #      [0, 1, 1, 1]]
+    # solver.best_template_match(template_list=[A], image=B, method='all', decimal=4)
+    # solver.best_template_match([A], C, method='all', decimal=4)
+    # solver.best_template_match([B], C, method='all', decimal=4)
