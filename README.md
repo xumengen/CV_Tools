@@ -23,7 +23,7 @@ The main functions:
 
 | Function Name  | Tutorial | Input Parameter | Output Parameter | annotation |
 | -------------- | -------- | --------------- | ---------------- | ---------- |
-| Content Cell   | Content  |
+| compute_thin_lens_equation   | 2_7  | f=None, z1=None, z2=None | f or z1 or z2| compute one parameter using thin lens equation |
 | Content Cell   | Content  |
 
 * 
