@@ -42,6 +42,22 @@ class Tutorail_solver:
         distance_point_and_baseline = 0.5 * baseline_length * tan(angle_2)
         return round(abs(distance_point_and_baseline - distance_fix_and_baseline), 3)
     
+    # tutorial 8_4
+    def compute_depth_of_scence_point(self, frame_1_point, frame_2_point, velocity, move_method='x-axis', pixel_size=None, focal_length=None, center_coordinate=None):
+        """
+        """
+        if move_method == 'x-axis':
+            assert focal_length
+            assert pixel_size
+            v_p = (frame_2_point[0]- frame_1_point[0]) / (frame_2_point[2] - frame_1_point[2]) * pixel_size
+            return -focal_length * velocity / v_p
+        elif move_method == 'z-axis':
+            assert center_coordinate
+            frame_1_point[0] = frame_1_point[0] - center_coordinate[0]
+            frame_2_point[0] = frame_2_point[0] - center_coordinate[0]
+            v_p = (frame_2_point[0] - frame_1_point[0]) / (frame_2_point[2] - frame_1_point[2])
+            return frame_1_point[0] * velocity / v_p
+
     # tutorial 8_5
     def compute_segment_moving_object_from_background(self, pixel_patches, thres, beta, method='both'):
         """ segment the moving object from background
@@ -84,22 +100,6 @@ class Tutorail_solver:
             result_2 = bg_sub()
             # return np.concatenate((result_1, result_2), axis=0)
             return result_1, result_2
-
-    # tutorial 8_4
-    def compute_depth_of_scence_point(self, frame_1_point, frame_2_point, velocity, move_method='x-axis', pixel_size=None, focal_length=None, center_coordinate=None):
-        """
-        """
-        if move_method == 'x-axis':
-            assert focal_length
-            assert pixel_size
-            v_p = (frame_2_point[0]- frame_1_point[0]) / (frame_2_point[2] - frame_1_point[2]) * pixel_size
-            return -focal_length * velocity / v_p
-        elif move_method == 'z-axis':
-            assert center_coordinate
-            frame_1_point[0] = frame_1_point[0] - center_coordinate[0]
-            frame_2_point[0] = frame_2_point[0] - center_coordinate[0]
-            v_p = (frame_2_point[0] - frame_1_point[0]) / (frame_2_point[2] - frame_1_point[2])
-            return frame_1_point[0] * velocity / v_p
 
     # tutorial 10_4
     def compute_object_class(self, class_list, feature_vector_list, object_feature_vector, k):
@@ -749,7 +749,24 @@ class Tutorail_solver:
         result_3 = np.power(np.sum(np.power(array_2, 2)), 0.5)
         return result_1 / (result_2 * result_3)
 
-    # tutorial 9_1
+    def compute_min_dist(self, array_1, array_2):
+        """
+        """
+        assert array_1.shape == array_2.shape
+        correspond_index_1 = np.where(array_1==1)
+        correspond_index_2 = np.where(array_2==1)
+
+        result_list = []
+        for i in range(len(correspond_index_1[0])):
+            correspond_1 = np.array([correspond_index_1[0][i], correspond_index_1[1][i]])
+            tmp_list = []
+            for j in range(len(correspond_index_2[0])):
+                correspond_2 = np.array([correspond_index_2[0][j], correspond_index_2[1][j]])
+                tmp_list.append(round(self.compute_eucli_distance(correspond_1, correspond_2), 2))
+            result_list.append(min(tmp_list))
+        return np.mean(np.array(result_list))
+
+    # tutorial 9_1, 9_4
     def find_object_location(self, template, image, method):
         """
         """
@@ -766,14 +783,47 @@ class Tutorail_solver:
                     array_1 = template
                     array_2 = image[i-interval:i+interval+1, j-interval:j+interval+1]
                     result_array[i][j] = self.compute_similarity_using_normalised_cross_correlation(array_1, array_2)
+            print("the template result of pixel in image is\n {}\n".format(result_array))
             result = np.unravel_index(result_array.argmax(), result_array.shape)
-        if method == 'sum_of_absolute_differences':
+
+        elif method == 'cross_correlation':
+            result_array = np.zeros(image.shape)
+            for i in range(start[0], end[0]+1):
+                for j in range(start[1], end[1]+1):
+                    array_1 = template
+                    array_2 = image[i-interval:i+interval+1, j-interval:j+interval+1]
+                    result_array[i][j] = self.compute_similarity_using_cross_correlation(array_1, array_2)
+            print("the template result of pixel in image is\n {}\n".format(result_array))
+            result = np.unravel_index(result_array.argmax(), result_array.shape)
+
+        elif method == 'correlation_coefficient':
+            result_array = np.zeros(image.shape)
+            for i in range(start[0], end[0]+1):
+                for j in range(start[1], end[1]+1):
+                    array_1 = template
+                    array_2 = image[i-interval:i+interval+1, j-interval:j+interval+1]
+                    result_array[i][j] = self.compute_similarity_using_correlation_coefficient(array_1, array_2)
+            print("the template result of pixel in image is\n {}\n".format(result_array))
+            result = np.unravel_index(result_array.argmax(), result_array.shape)
+
+        elif method == 'sum_of_absolute_differences':
             result_array = np.full(image.shape, fill_value=float('inf'))
             for i in range(start[0], end[0]+1):
                 for j in range(start[1], end[1]+1):
                     array_1 = template
                     array_2 = image[i-interval:i+interval+1, j-interval:j+interval+1]
                     result_array[i][j] = self.compute_SAD_diff(array_1, array_2)
+            print("the template result of pixel in image is\n {}\n".format(result_array))
+            result = np.unravel_index(result_array.argmin(), result_array.shape)
+
+        elif method == 'minimum_distance':
+            result_array = np.full(image.shape, fill_value=float('inf'))
+            for i in range(start[0], end[0]+1):
+                for j in range(start[1], end[1]+1):
+                    array_1 = template
+                    array_2 = image[i-interval:i+interval+1, j-interval:j+interval+1]
+                    result_array[i][j] = self.compute_min_dist(array_1, array_2)
+            print("the template result of pixel in image is\n {}\n".format(result_array))
             result = np.unravel_index(result_array.argmin(), result_array.shape)
         return [result[1]+1, result[0]+1]
 
@@ -822,3 +872,26 @@ class Tutorail_solver:
                 if val == min_value:
                     final_result_list.append(idx+1)
             return final_result_list
+
+    # tutorial 9_10
+    def compute_cross_ratio(self, p1, p2, p3, p4, method='3d', center_coordinate=None, magnification_factors=None):
+        """
+        """
+        if method == '2d':
+            assert center_coordinate
+            assert magnification_factors
+            p1 = np.around(self.compute_3d_point_2d_coordinate(ori_coordinate=p1, image_principal_point=center_coordinate, magnification_factors=magnification_factors), 1)
+            p2 = np.around(self.compute_3d_point_2d_coordinate(ori_coordinate=p2, image_principal_point=center_coordinate, magnification_factors=magnification_factors), 1)
+            p3 = np.around(self.compute_3d_point_2d_coordinate(ori_coordinate=p3, image_principal_point=center_coordinate, magnification_factors=magnification_factors), 1)
+            p4 = np.around(self.compute_3d_point_2d_coordinate(ori_coordinate=p4, image_principal_point=center_coordinate, magnification_factors=magnification_factors), 1)
+        p1 = np.array(p1)
+        p2 = np.array(p2)
+        p3 = np.array(p3)
+        p4 = np.array(p4)
+        dist_1_3 = round(self.compute_eucli_distance(p1, p3), 1)
+        dist_2_4 = round(self.compute_eucli_distance(p2, p4), 1)
+        dist_1_4 = round(self.compute_eucli_distance(p1, p4), 1)
+        dist_2_3 = round(self.compute_eucli_distance(p2, p3), 1)
+        print(dist_1_3, dist_2_4, dist_1_4, dist_2_3)
+        cross_ratio = round((dist_1_3 * dist_2_4) / (dist_1_4 * dist_2_3))
+        return cross_ratio

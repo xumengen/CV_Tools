@@ -136,6 +136,15 @@ if __name__ == '__main__':
     # print(solver.find_object_location(template, I, 'normalised_cross_correlation'))
     # print(solver.find_object_location(template, I, 'sum_of_absolute_differences'))
 
+    # template = [[1, 1, 1],
+    #             [1, 0, 1],
+    #             [1, 1, 1]]
+    # I = [[0, 0, 0, 0],
+    #      [1, 1, 1, 0],
+    #      [0, 0, 1, 0],
+    #      [1, 1, 1, 0]]
+    # print(solver.find_object_location(template, I, 'minimum_distance'))
+
     # template_1 = [[1, 1, 1],
     #               [1, 0, 0],
     #               [1, 1, 1]]
@@ -153,8 +162,15 @@ if __name__ == '__main__':
     # print(solver.best_template_match([template_1, template_2, template_3], image, method='correlation_coefficient'))
     # print(solver.best_template_match([template_1, template_2, template_3], image, method='SAD'))
 
-    image_1 = [2,0,0,5,1,0,0,0,3,1]
-    image_2 = [0,0,1,2,0,3,1,0,1,0]
-    image_3 = [1,1,2,0,0,1,0,3,1,1]
-    new_image = [2,1,1,0,1,1,0,2,0,1]
-    print(solver.best_template_match([image_1, image_2, image_3], new_image, method='normalised_cross_correlation'))
+    # image_1 = [2,0,0,5,1,0,0,0,3,1]
+    # image_2 = [0,0,1,2,0,3,1,0,1,0]
+    # image_3 = [1,1,2,0,0,1,0,3,1,1]
+    # new_image = [2,1,1,0,1,1,0,2,0,1]
+    # print(solver.best_template_match([image_1, image_2, image_3], new_image, method='normalised_cross_correlation'))
+
+    p1 = [40,-40,400]
+    p2 = [23.3,-6.7,483.3]
+    p3 = [15,10,525]
+    p4 = [-10,60,650]
+    print(solver.compute_cross_ratio(p1, p2, p3, p4, method='3d'))
+    print(solver.compute_cross_ratio(p1, p2, p3, p4, method='2d', center_coordinate=[244,180], magnification_factors=[925, 740]))
