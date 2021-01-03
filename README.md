@@ -22,7 +22,7 @@ This repo contains the functions which appear in the turorails.
 The main functions:
 
 | Function Name  | Tutorial | Input Parameter | Output Parameter | annotation |
-| -------------- | -------- | --------------- | ---------------- |
+| -------------- | -------- | --------------- | ---------------- | ---------- |
 | Content Cell   | Content  |
 | Content Cell   | Content  |
 
