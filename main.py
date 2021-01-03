@@ -45,7 +45,9 @@ if __name__ == '__main__':
     # result = solver.compute_harris_corner_detector(Ix, Iy)
     # print(result)
 
-    # feature_vector_array = [[[5, 10, 15], [10, 15, 30], [10, 10, 25]], [[10, 10, 15], [5, 20, 15], [10, 5, 30]], [[5, 5, 15], [30, 10, 5], [30, 10, 10]]]
+    # feature_vector_array = [[[5, 10, 15], [10, 15, 30], [10, 10, 25]], 
+    #                         [[10, 10, 15], [5, 20, 15], [10, 5, 30]], 
+    #                         [[5, 5, 15], [30, 10, 5], [30, 10, 10]]]
     # solver.region_growing(feature_vector_array)
     # solver.region_merge(feature_vector_array)
     # solver.k_means(feature_vector_array, 2, [[5, 10, 15], [10, 10, 25]])
@@ -83,7 +85,7 @@ if __name__ == '__main__':
     # result = solver.compute_thin_lens_equation(f=35, z1=500, z2=None)
     # print(result)
 
-    # result = solver.compute_3d_point_2d_coordinate([10, 10, 500], [244, 180], [925, 740])
+    # result = solver.compute_3d_point_2d_coordinate([10, 10, 500], [244, 180], [925, 740], decimal=2)
     # print(result)
 
     # ori_imgae = [[[205, 195],
@@ -168,9 +170,11 @@ if __name__ == '__main__':
     # new_image = [2,1,1,0,1,1,0,2,0,1]
     # print(solver.best_template_match([image_1, image_2, image_3], new_image, method='normalised_cross_correlation'))
 
-    p1 = [40,-40,400]
-    p2 = [23.3,-6.7,483.3]
-    p3 = [15,10,525]
-    p4 = [-10,60,650]
-    print(solver.compute_cross_ratio(p1, p2, p3, p4, method='3d'))
-    print(solver.compute_cross_ratio(p1, p2, p3, p4, method='2d', center_coordinate=[244,180], magnification_factors=[925, 740]))
+    # p1 = [40,-40,400]
+    # p2 = [23.3,-6.7,483.3]
+    # p3 = [15,10,525]
+    # p4 = [-10,60,650]
+    # print(solver.compute_cross_ratio(p1, p2, p3, p4, method='3d'))
+    # print(solver.compute_cross_ratio(p1, p2, p3, p4, method='2d', center_coordinate=[244,180], magnification_factors=[925, 740]))
+
+    print(solver.compute_z_from_two_coplanar_camera(f=30, B=400, pixel_size=0.1, left_coordinate=(231,345), right_coordinate=(45, 345), decimal=0, coplanar='x-axis'))
