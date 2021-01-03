@@ -42,6 +42,22 @@ class Tutorail_solver:
         distance_point_and_baseline = 0.5 * baseline_length * tan(angle_2)
         return round(abs(distance_point_and_baseline - distance_fix_and_baseline), 3)
     
+    # tutorial 8_4
+    def compute_depth_of_scence_point(self, frame_1_point, frame_2_point, velocity, move_method='x-axis', pixel_size=None, focal_length=None, center_coordinate=None):
+        """
+        """
+        if move_method == 'x-axis':
+            assert focal_length
+            assert pixel_size
+            v_p = (frame_2_point[0]- frame_1_point[0]) / (frame_2_point[2] - frame_1_point[2]) * pixel_size
+            return -focal_length * velocity / v_p
+        elif move_method == 'z-axis':
+            assert center_coordinate
+            frame_1_point[0] = frame_1_point[0] - center_coordinate[0]
+            frame_2_point[0] = frame_2_point[0] - center_coordinate[0]
+            v_p = (frame_2_point[0] - frame_1_point[0]) / (frame_2_point[2] - frame_1_point[2])
+            return frame_1_point[0] * velocity / v_p
+
     # tutorial 8_5
     def compute_segment_moving_object_from_background(self, pixel_patches, thres, beta, method='both'):
         """ segment the moving object from background
@@ -84,22 +100,6 @@ class Tutorail_solver:
             result_2 = bg_sub()
             # return np.concatenate((result_1, result_2), axis=0)
             return result_1, result_2
-
-    # tutorial 8_4
-    def compute_depth_of_scence_point(self, frame_1_point, frame_2_point, velocity, move_method='x-axis', pixel_size=None, focal_length=None, center_coordinate=None):
-        """
-        """
-        if move_method == 'x-axis':
-            assert focal_length
-            assert pixel_size
-            v_p = (frame_2_point[0]- frame_1_point[0]) / (frame_2_point[2] - frame_1_point[2]) * pixel_size
-            return -focal_length * velocity / v_p
-        elif move_method == 'z-axis':
-            assert center_coordinate
-            frame_1_point[0] = frame_1_point[0] - center_coordinate[0]
-            frame_2_point[0] = frame_2_point[0] - center_coordinate[0]
-            v_p = (frame_2_point[0] - frame_1_point[0]) / (frame_2_point[2] - frame_1_point[2])
-            return frame_1_point[0] * velocity / v_p
 
     # tutorial 10_4
     def compute_object_class(self, class_list, feature_vector_list, object_feature_vector, k):
@@ -766,6 +766,7 @@ class Tutorail_solver:
                     array_1 = template
                     array_2 = image[i-interval:i+interval+1, j-interval:j+interval+1]
                     result_array[i][j] = self.compute_similarity_using_normalised_cross_correlation(array_1, array_2)
+            print("the template result of pixel in image is\n {}\n".format(result_array))
             result = np.unravel_index(result_array.argmax(), result_array.shape)
         if method == 'sum_of_absolute_differences':
             result_array = np.full(image.shape, fill_value=float('inf'))
@@ -774,6 +775,7 @@ class Tutorail_solver:
                     array_1 = template
                     array_2 = image[i-interval:i+interval+1, j-interval:j+interval+1]
                     result_array[i][j] = self.compute_SAD_diff(array_1, array_2)
+            print("the template result of pixel in image is\n {}\n".format(result_array))
             result = np.unravel_index(result_array.argmin(), result_array.shape)
         return [result[1]+1, result[0]+1]
 

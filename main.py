@@ -126,15 +126,15 @@ if __name__ == '__main__':
     #print(solver.compute_pixel_val_using_gaussian((3, 3), standard_deviation=0.46))
 
     # tutorial9
-    # template = [[100, 150, 200],
-    #             [150, 10, 200],
-    #             [200, 200, 250]]
-    # I = [[60, 50, 40, 40],
-    #      [150, 100, 100, 80],
-    #      [50, 20, 200, 80],
-    #      [200, 150, 150, 50]]
-    # print(solver.find_object_location(template, I, 'normalised_cross_correlation'))
-    # print(solver.find_object_location(template, I, 'sum_of_absolute_differences'))
+    template = [[100, 150, 200],
+                [150, 10, 200],
+                [200, 200, 250]]
+    I = [[60, 50, 40, 40],
+         [150, 100, 100, 80],
+         [50, 20, 200, 80],
+         [200, 150, 150, 50]]
+    print(solver.find_object_location(template, I, 'normalised_cross_correlation'))
+    print(solver.find_object_location(template, I, 'sum_of_absolute_differences'))
 
     # template_1 = [[1, 1, 1],
     #               [1, 0, 0],
@@ -153,8 +153,8 @@ if __name__ == '__main__':
     # print(solver.best_template_match([template_1, template_2, template_3], image, method='correlation_coefficient'))
     # print(solver.best_template_match([template_1, template_2, template_3], image, method='SAD'))
 
-    image_1 = [2,0,0,5,1,0,0,0,3,1]
-    image_2 = [0,0,1,2,0,3,1,0,1,0]
-    image_3 = [1,1,2,0,0,1,0,3,1,1]
-    new_image = [2,1,1,0,1,1,0,2,0,1]
-    print(solver.best_template_match([image_1, image_2, image_3], new_image, method='normalised_cross_correlation'))
+    # image_1 = [2,0,0,5,1,0,0,0,3,1]
+    # image_2 = [0,0,1,2,0,3,1,0,1,0]
+    # image_3 = [1,1,2,0,0,1,0,3,1,1]
+    # new_image = [2,1,1,0,1,1,0,2,0,1]
+    # print(solver.best_template_match([image_1, image_2, image_3], new_image, method='normalised_cross_correlation'))
