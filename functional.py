@@ -840,14 +840,22 @@ class Tutorail_solver:
         return [result[1]+1, result[0]+1]
 
     # tutorial 9_3
-    def best_template_match(self, template_list, image, method):
+    def best_template_match(self, template_list, image, method, decimal):
         """
         """
+        if method == 'all':
+            self.best_template_match(template_list, image, method='cross_correlation', decimal=decimal)
+            self.best_template_match(template_list, image, method='normalised_cross_correlation', decimal=decimal)
+            self.best_template_match(template_list, image, method='correlation_coefficient', decimal=decimal)
+            self.best_template_match(template_list, image, method='SAD', decimal=decimal)
+            return
+
         image = np.array(image)
         if method == 'cross_correlation':
             result_list = []
             for template in template_list:
-                result_list.append(round(self.compute_similarity_using_cross_correlation(np.array(template), image), 2))
+                result_list.append(round(self.compute_similarity_using_cross_correlation(np.array(template), image), decimal))
+            print("the cross correlation result is\n {}\n".format(result_list))
             max_value = max(result_list)
             final_result_list = []
             for idx, val in enumerate(result_list):
@@ -857,7 +865,8 @@ class Tutorail_solver:
         elif method == 'normalised_cross_correlation':
             result_list = []
             for template in template_list:
-                result_list.append(round(self.compute_similarity_using_normalised_cross_correlation(np.array(template), image), 2))
+                result_list.append(round(self.compute_similarity_using_normalised_cross_correlation(np.array(template), image), decimal))
+            print("the normalised cross correlation result is\n {}\n".format(result_list))
             max_value = max(result_list)
             final_result_list = []
             for idx, val in enumerate(result_list):
@@ -867,7 +876,8 @@ class Tutorail_solver:
         elif method == 'correlation_coefficient':
             result_list = []
             for template in template_list:
-                result_list.append(round(self.compute_similarity_using_correlation_coefficient(np.array(template), image), 2))
+                result_list.append(round(self.compute_similarity_using_correlation_coefficient(np.array(template), image), decimal))
+            print("the correlation coefficient result is\n {}\n".format(result_list))
             max_value = max(result_list)
             final_result_list = []
             for idx, val in enumerate(result_list):
@@ -877,7 +887,8 @@ class Tutorail_solver:
         elif method == 'SAD':
             result_list = []
             for template in template_list:
-                result_list.append(round(self.compute_SAD_diff(np.array(template), image), 2))
+                result_list.append(round(self.compute_SAD_diff(np.array(template), image), decimal))
+            print("the SAD result is\n {}\n".format(result_list))
             min_value = min(result_list)
             final_result_list = []
             for idx, val in enumerate(result_list):

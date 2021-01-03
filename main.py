@@ -177,4 +177,22 @@ if __name__ == '__main__':
     # print(solver.compute_cross_ratio(p1, p2, p3, p4, method='3d'))
     # print(solver.compute_cross_ratio(p1, p2, p3, p4, method='2d', center_coordinate=[244,180], magnification_factors=[925, 740]))
 
-    print(solver.compute_z_from_two_coplanar_camera(f=30, B=400, pixel_size=0.1, left_coordinate=(231,345), right_coordinate=(45, 345), decimal=0, coplanar='x-axis'))
+    # print(solver.compute_z_from_two_coplanar_camera(f=30, B=400, pixel_size=0.1, left_coordinate=(231,345), right_coordinate=(45, 345), decimal=0, coplanar='x-axis'))
+
+    A = [[0, 1, 0, 0],
+         [1, 0 ,0, 0],
+         [0, 1, 0, 1],
+         [1, 0, 1, 0]]
+
+    B = [[0, 0, 0, 0],
+         [1, 0 ,1, 0],
+         [1, 1, 1, 0],
+         [0, 1, 0, 0]]
+
+    C = [[0, 0, 0, 0],
+         [0, 0 ,0, 0],
+         [0, 1, 0, 1],
+         [0, 1, 1, 1]]
+    solver.best_template_match([A], B, method='all', decimal=4)
+    solver.best_template_match([A], C, method='all', decimal=4)
+    solver.best_template_match([B], C, method='all', decimal=4)
