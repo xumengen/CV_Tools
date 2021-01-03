@@ -931,4 +931,3 @@ class Tutorail_solver:
         cross_ratio = round((dist_1_3 * dist_2_4) / (dist_1_4 * dist_2_3))
         return cross_ratio
     
-    def 
