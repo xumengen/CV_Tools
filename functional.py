@@ -17,6 +17,15 @@ class Tutorail_solver:
     def __init__(self):
         pass
  
+    # tutorial 7_1
+    def compute_z_from_two_coplanar_camera(self, f, B, left_coordinate, right_coordinate, pixel_size, coplanar='x-axis', decimal=2):
+        """
+        """
+        if coplanar ==  'x-axis':
+            return round((f * B) / (pixel_size * (left_coordinate[0] - right_coordinate[0])), decimal)
+        elif coplanar == 'y-axis':
+            return round((f * B) / (pixel_size * (left_coordinate[1] - right_coordinate[1])), decimal)
+
     # tutorial 7_5
     def compute_distance_between_point_and_horopter(self, baseline_length, angle_z_baseline, a_l, a_r):
         """ compute the distance between the point and the horopter
@@ -470,6 +479,7 @@ class Tutorail_solver:
         ori_feature_vetor_array = np.array(ori_feature_vetor_array)
         result_array = np.empty(feature_vector_array.shape[:-1])
 
+        count = 1
         while True:
             result_array_copy = result_array.copy()
             for i in range(feature_vector_array.shape[0]):
@@ -481,8 +491,10 @@ class Tutorail_solver:
                         dist_list.append(self.compute_SAD_diff(feature_vector, ori_feature_vetor_array[m]))
                     label = dist_list.index(min(dist_list)) + 1
                     result_array[i][j] = label
+            print("the result of {}-th step is\n {}\n".format(count, result_array))
             if (result_array_copy == result_array).all():
                 break
+            count += 1
             ori_feature_vetor_array = compute_new_cluster_center()
 
         print("the result of region k-means is\n {}\n".format(result_array))
@@ -638,7 +650,7 @@ class Tutorail_solver:
             print("Your input kidding me!!!")
 
     # tutorial 2_11
-    def compute_3d_point_2d_coordinate(self, ori_coordinate, image_principal_point, magnification_factors):
+    def compute_3d_point_2d_coordinate(self, ori_coordinate, image_principal_point, magnification_factors, decimal=2):
         """
         """
         assert len(ori_coordinate) == 3
@@ -654,9 +666,10 @@ class Tutorail_solver:
         result_array = (1 / float(ori_coordinate[-1]) * np.dot(np.dot(array_1, array_2), array_3)).tolist()
         new_result_array = list()
         for result in result_array:
-            new_result_array.append(int(round(result)))
+            new_result_array.append(round(result, decimal))
         return new_result_array
 
+    # tutorial 2_12
     def convert_rbg_to_gray(self, ori_image, bit=8):
         """
         """
@@ -825,17 +838,36 @@ class Tutorail_solver:
                     result_array[i][j] = self.compute_min_dist(array_1, array_2)
             print("the template result of pixel in image is\n {}\n".format(result_array))
             result = np.unravel_index(result_array.argmin(), result_array.shape)
+    
+        elif method == 'eucli_distance':
+            result_array = np.full(image.shape, fill_value=float('inf'))
+            for i in range(start[0], end[0]+1):
+                for j in range(start[1], end[1]+1):
+                    array_1 = template
+                    array_2 = image[i-interval:i+interval+1, j-interval:j+interval+1]
+                    result_array[i][j] = self.compute_eucli_distance(array_1, array_2)
+            print("the template result of pixel in image is\n {}\n".format(result_array))
+            result = np.unravel_index(result_array.argmin(), result_array.shape)
+        
         return [result[1]+1, result[0]+1]
 
     # tutorial 9_3
-    def best_template_match(self, template_list, image, method):
+    def best_template_match(self, template_list, image, method, decimal):
         """
         """
+        if method == 'all':
+            self.best_template_match(template_list, image, method='cross_correlation', decimal=decimal)
+            self.best_template_match(template_list, image, method='normalised_cross_correlation', decimal=decimal)
+            self.best_template_match(template_list, image, method='correlation_coefficient', decimal=decimal)
+            self.best_template_match(template_list, image, method='SAD', decimal=decimal)
+            return
+
         image = np.array(image)
         if method == 'cross_correlation':
             result_list = []
             for template in template_list:
-                result_list.append(round(self.compute_similarity_using_cross_correlation(np.array(template), image), 2))
+                result_list.append(round(self.compute_similarity_using_cross_correlation(np.array(template), image), decimal))
+            print("the cross correlation result is\n {}\n".format(result_list))
             max_value = max(result_list)
             final_result_list = []
             for idx, val in enumerate(result_list):
@@ -845,7 +877,8 @@ class Tutorail_solver:
         elif method == 'normalised_cross_correlation':
             result_list = []
             for template in template_list:
-                result_list.append(round(self.compute_similarity_using_normalised_cross_correlation(np.array(template), image), 2))
+                result_list.append(round(self.compute_similarity_using_normalised_cross_correlation(np.array(template), image), decimal))
+            print("the normalised cross correlation result is\n {}\n".format(result_list))
             max_value = max(result_list)
             final_result_list = []
             for idx, val in enumerate(result_list):
@@ -855,7 +888,8 @@ class Tutorail_solver:
         elif method == 'correlation_coefficient':
             result_list = []
             for template in template_list:
-                result_list.append(round(self.compute_similarity_using_correlation_coefficient(np.array(template), image), 2))
+                result_list.append(round(self.compute_similarity_using_correlation_coefficient(np.array(template), image), decimal))
+            print("the correlation coefficient result is\n {}\n".format(result_list))
             max_value = max(result_list)
             final_result_list = []
             for idx, val in enumerate(result_list):
@@ -865,7 +899,8 @@ class Tutorail_solver:
         elif method == 'SAD':
             result_list = []
             for template in template_list:
-                result_list.append(round(self.compute_SAD_diff(np.array(template), image), 2))
+                result_list.append(round(self.compute_SAD_diff(np.array(template), image), decimal))
+            print("the SAD result is\n {}\n".format(result_list))
             min_value = min(result_list)
             final_result_list = []
             for idx, val in enumerate(result_list):
@@ -874,24 +909,26 @@ class Tutorail_solver:
             return final_result_list
 
     # tutorial 9_10
-    def compute_cross_ratio(self, p1, p2, p3, p4, method='3d', center_coordinate=None, magnification_factors=None):
+    def compute_cross_ratio(self, p1, p2, p3, p4, method='3d', center_coordinate=None, magnification_factors=None, decimal=1):
         """
         """
         if method == '2d':
             assert center_coordinate
             assert magnification_factors
-            p1 = np.around(self.compute_3d_point_2d_coordinate(ori_coordinate=p1, image_principal_point=center_coordinate, magnification_factors=magnification_factors), 1)
-            p2 = np.around(self.compute_3d_point_2d_coordinate(ori_coordinate=p2, image_principal_point=center_coordinate, magnification_factors=magnification_factors), 1)
-            p3 = np.around(self.compute_3d_point_2d_coordinate(ori_coordinate=p3, image_principal_point=center_coordinate, magnification_factors=magnification_factors), 1)
-            p4 = np.around(self.compute_3d_point_2d_coordinate(ori_coordinate=p4, image_principal_point=center_coordinate, magnification_factors=magnification_factors), 1)
+            p1 = self.compute_3d_point_2d_coordinate(ori_coordinate=p1, image_principal_point=center_coordinate, magnification_factors=magnification_factors, decimal=decimal)
+            p2 = self.compute_3d_point_2d_coordinate(ori_coordinate=p2, image_principal_point=center_coordinate, magnification_factors=magnification_factors, decimal=decimal)
+            p3 = self.compute_3d_point_2d_coordinate(ori_coordinate=p3, image_principal_point=center_coordinate, magnification_factors=magnification_factors, decimal=decimal)
+            p4 = self.compute_3d_point_2d_coordinate(ori_coordinate=p4, image_principal_point=center_coordinate, magnification_factors=magnification_factors, decimal=decimal)
         p1 = np.array(p1)
         p2 = np.array(p2)
         p3 = np.array(p3)
         p4 = np.array(p4)
-        dist_1_3 = round(self.compute_eucli_distance(p1, p3), 1)
-        dist_2_4 = round(self.compute_eucli_distance(p2, p4), 1)
-        dist_1_4 = round(self.compute_eucli_distance(p1, p4), 1)
-        dist_2_3 = round(self.compute_eucli_distance(p2, p3), 1)
+        dist_1_3 = round(self.compute_eucli_distance(p1, p3), decimal)
+        dist_2_4 = round(self.compute_eucli_distance(p2, p4), decimal)
+        dist_1_4 = round(self.compute_eucli_distance(p1, p4), decimal)
+        dist_2_3 = round(self.compute_eucli_distance(p2, p3), decimal)
         print(dist_1_3, dist_2_4, dist_1_4, dist_2_3)
         cross_ratio = round((dist_1_3 * dist_2_4) / (dist_1_4 * dist_2_3))
         return cross_ratio
+    
+    def 
