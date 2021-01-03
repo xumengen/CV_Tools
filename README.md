@@ -18,7 +18,7 @@ This repo contains the functions which appear in the turorails.
 ### Main Features
 
 | Function Name  | Tutorial | Input Parameter | Output Parameter | annotation |
-| -------------- | -------- | --------------- | ---------------- | ---------- |
+| :--------------: | :--------: | :---------------: | :----------------: | :----------: |
 | compute_thin_lens_equation | 2.7  | f, z1, z2 | f or z1 or z2| compute one parameter using thin lens equation |
 |  compute_3d_point_2d_coordinate  | 2.11 | ori_coordinate, image_principal_point, magnification_factors, decimal | 2d point |compute the 3d point in the image coordinate system
 |  convert_rbg_to_gray | 2.12 | ori_image, bit | gray image | convert rgb image to gray image |
