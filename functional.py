@@ -749,7 +749,24 @@ class Tutorail_solver:
         result_3 = np.power(np.sum(np.power(array_2, 2)), 0.5)
         return result_1 / (result_2 * result_3)
 
-    # tutorial 9_1
+    def compute_min_dist(self, array_1, array_2):
+        """
+        """
+        assert array_1.shape == array_2.shape
+        correspond_index_1 = np.where(array_1==1)
+        correspond_index_2 = np.where(array_2==1)
+
+        result_list = []
+        for i in range(len(correspond_index_1[0])):
+            correspond_1 = np.array([correspond_index_1[0][i], correspond_index_1[1][i]])
+            tmp_list = []
+            for j in range(len(correspond_index_2[0])):
+                correspond_2 = np.array([correspond_index_2[0][j], correspond_index_2[1][j]])
+                tmp_list.append(round(self.compute_eucli_distance(correspond_1, correspond_2), 2))
+            result_list.append(min(tmp_list))
+        return np.mean(np.array(result_list))
+
+    # tutorial 9_1, 9_4
     def find_object_location(self, template, image, method):
         """
         """
@@ -798,7 +815,18 @@ class Tutorail_solver:
                     result_array[i][j] = self.compute_SAD_diff(array_1, array_2)
             print("the template result of pixel in image is\n {}\n".format(result_array))
             result = np.unravel_index(result_array.argmin(), result_array.shape)
+
+        elif method == 'minimum_distance':
+            result_array = np.full(image.shape, fill_value=float('inf'))
+            for i in range(start[0], end[0]+1):
+                for j in range(start[1], end[1]+1):
+                    array_1 = template
+                    array_2 = image[i-interval:i+interval+1, j-interval:j+interval+1]
+                    result_array[i][j] = self.compute_min_dist(array_1, array_2)
+            print("the template result of pixel in image is\n {}\n".format(result_array))
+            result = np.unravel_index(result_array.argmin(), result_array.shape)
         return [result[1]+1, result[0]+1]
+
 
     # tutorial 9_3
     def best_template_match(self, template_list, image, method):
