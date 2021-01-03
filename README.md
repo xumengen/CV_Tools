@@ -17,9 +17,14 @@ This repo contains the functions which appear in the turorails.
 
 
 
-### Tech
+### Main Features
 
-The main function contains:
+The main functions:
+
+| Function Name  | Tutorial | Input Parameter | Output Parameter |
+| -------------- | -------- | --------------- | ---------------- |
+| Content Cell  | Content Cell  |
+| Content Cell  | Content Cell  |
 
 * 
 * 
