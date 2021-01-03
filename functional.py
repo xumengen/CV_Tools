@@ -768,7 +768,28 @@ class Tutorail_solver:
                     result_array[i][j] = self.compute_similarity_using_normalised_cross_correlation(array_1, array_2)
             print("the template result of pixel in image is\n {}\n".format(result_array))
             result = np.unravel_index(result_array.argmax(), result_array.shape)
-        if method == 'sum_of_absolute_differences':
+
+        elif method == 'cross_correlation':
+            result_array = np.zeros(image.shape)
+            for i in range(start[0], end[0]+1):
+                for j in range(start[1], end[1]+1):
+                    array_1 = template
+                    array_2 = image[i-interval:i+interval+1, j-interval:j+interval+1]
+                    result_array[i][j] = self.compute_similarity_using_cross_correlation(array_1, array_2)
+            print("the template result of pixel in image is\n {}\n".format(result_array))
+            result = np.unravel_index(result_array.argmax(), result_array.shape)
+
+        elif method == 'correlation_coefficient':
+            result_array = np.zeros(image.shape)
+            for i in range(start[0], end[0]+1):
+                for j in range(start[1], end[1]+1):
+                    array_1 = template
+                    array_2 = image[i-interval:i+interval+1, j-interval:j+interval+1]
+                    result_array[i][j] = self.compute_similarity_using_correlation_coefficient(array_1, array_2)
+            print("the template result of pixel in image is\n {}\n".format(result_array))
+            result = np.unravel_index(result_array.argmax(), result_array.shape)
+
+        elif method == 'sum_of_absolute_differences':
             result_array = np.full(image.shape, fill_value=float('inf'))
             for i in range(start[0], end[0]+1):
                 for j in range(start[1], end[1]+1):
