@@ -827,7 +827,6 @@ class Tutorail_solver:
             result = np.unravel_index(result_array.argmin(), result_array.shape)
         return [result[1]+1, result[0]+1]
 
-
     # tutorial 9_3
     def best_template_match(self, template_list, image, method):
         """
@@ -873,3 +872,26 @@ class Tutorail_solver:
                 if val == min_value:
                     final_result_list.append(idx+1)
             return final_result_list
+
+    # tutorial 9_10
+    def compute_cross_ratio(self, p1, p2, p3, p4, method='3d', center_coordinate=None, magnification_factors=None):
+        """
+        """
+        if method == '2d':
+            assert center_coordinate
+            assert magnification_factors
+            p1 = np.around(self.compute_3d_point_2d_coordinate(ori_coordinate=p1, image_principal_point=center_coordinate, magnification_factors=magnification_factors), 1)
+            p2 = np.around(self.compute_3d_point_2d_coordinate(ori_coordinate=p2, image_principal_point=center_coordinate, magnification_factors=magnification_factors), 1)
+            p3 = np.around(self.compute_3d_point_2d_coordinate(ori_coordinate=p3, image_principal_point=center_coordinate, magnification_factors=magnification_factors), 1)
+            p4 = np.around(self.compute_3d_point_2d_coordinate(ori_coordinate=p4, image_principal_point=center_coordinate, magnification_factors=magnification_factors), 1)
+        p1 = np.array(p1)
+        p2 = np.array(p2)
+        p3 = np.array(p3)
+        p4 = np.array(p4)
+        dist_1_3 = round(self.compute_eucli_distance(p1, p3), 1)
+        dist_2_4 = round(self.compute_eucli_distance(p2, p4), 1)
+        dist_1_4 = round(self.compute_eucli_distance(p1, p4), 1)
+        dist_2_3 = round(self.compute_eucli_distance(p2, p3), 1)
+        print(dist_1_3, dist_2_4, dist_1_4, dist_2_3)
+        cross_ratio = round((dist_1_3 * dist_2_4) / (dist_1_4 * dist_2_3))
+        return cross_ratio
