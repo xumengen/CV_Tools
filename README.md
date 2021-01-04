@@ -59,6 +59,4 @@ step_2: run "python main.py"
  - modify the 3d to 2d point function
  - add RANSAC
 
-License
-
 **Free Software, Yeah!**
