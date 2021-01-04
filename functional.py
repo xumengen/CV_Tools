@@ -684,7 +684,7 @@ class Tutorail_solver:
             print("Your input kidding me!!!")
 
     # tutorial 2_11
-    def compute_3d_point_2d_coordinate(self, ori_coordinate, image_principal_point, magnification_factors, decimal=2):
+    def compute_3d_point_2d_uv_coordinate(self, ori_coordinate, image_principal_point, magnification_factors, decimal=2):
         """
         """
         assert len(ori_coordinate) == 3
@@ -697,11 +697,19 @@ class Tutorail_solver:
                             [0, 1, 0, 0],
                             [0, 0, 1, 0]])
         array_3 = np.array(ori_coordinate+[1.0])
-        result_array = (1 / float(ori_coordinate[-1]) * np.dot(np.dot(array_1, array_2), array_3)).tolist()
-        new_result_array = list()
-        for result in result_array:
-            new_result_array.append(round(result, decimal))
-        return new_result_array
+        result_array = np.around((1 / float(ori_coordinate[-1]) * np.dot(np.dot(array_1, array_2), array_3)), decimal)
+        return result_array
+    
+    def compute_3d_point_2d_xy_coordinate(self, ori_coordinate, f, decimal=2):
+        """
+        """
+        assert len(ori_coordinate) == 3
+        array_1 = np.array([[1, 0, 0, 0],
+                            [0, 1, 0, 0],
+                            [0, 0, 1, 0]])
+        array_2 = np.array(ori_coordinate+[1.0])
+        result_array = np.around((f / float(ori_coordinate[-1]) * np.dot(array_1, array_2), decimal))
+        return result_array
 
     # tutorial 2_12
     def convert_rbg_to_gray(self, ori_image, bit=8):

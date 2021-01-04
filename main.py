@@ -98,8 +98,8 @@ if __name__ == '__main__':
     # result = solver.compute_thin_lens_equation(f=35, z1=500, z2=None)
     # print(result)
 
-    # result = solver.compute_3d_point_2d_coordinate([10, 10, 500], [244, 180], [925, 740], decimal=2)
-    # print(result)
+    result = solver.compute_3d_point_2d_uv_coordinate([10, 10, 500], [244, 180], [925, 740], decimal=2)
+    print(result)
 
     # ori_imgae = [[[205, 195],
     #               [238, 203]],
@@ -211,15 +211,15 @@ if __name__ == '__main__':
     # solver.best_template_match([B], C, method='all', decimal=4)
 
 
-    left_point = [[187, 168],
-                  [203, 290],
-                  [215, 87],
-                  [234, 28],
-                  [366, 142]]
+    # left_point = [[187, 168],
+    #               [203, 290],
+    #               [215, 87],
+    #               [234, 28],
+    #               [366, 142]]
     
-    right_point = [[269, 243],
-                   [101, 394],
-                   [336, 178],
-                   [135, 128],
-                   [269, 243]]
-    print(solver.RANSAC(left_point, right_point, thres=20, trials=[0, 1, 2], decimal=2))
+    # right_point = [[269, 243],
+    #                [101, 394],
+    #                [336, 178],
+    #                [135, 128],
+    #                [269, 243]]
+    # print(solver.RANSAC(left_point, right_point, thres=20, trials=[0, 1, 2], decimal=2))
