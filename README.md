@@ -17,7 +17,8 @@ This repo contains the functions which appear in the turorails.
 | Function Name  | Tutorial | Input Parameter | Output Parameter | annotation |
 | :--------------: | :--------: | :---------------: | :----------------: | :----------: |
 | compute_thin_lens_equation | 2.7  | f, z1, z2 | f or z1 or z2| compute one parameter using thin lens equation |
-|  compute_3d_point_2d_coordinate  | 2.11 | ori_coordinate, image_principal_point, magnification_factors, decimal | 2d point |compute the 3d point in the image coordinate system
+|  compute_3d_point_2d_uv_coordinate  | 2.11 | ori_coordinate, image_principal_point, magnification_factors, decimal | 2d point |compute the 3d point in the uv image coordinate system |
+|  compute_3d_point_2d_xy_coordinate  | 2.11 | ori_coordinate, f, decimal | 2d point |compute the 3d point in the xy image coordinate system |
 |  convert_rbg_to_gray | 2.12 | ori_image, bit | gray image | convert rgb image to gray image |
 | convolution | 3.1 | mask, I, method | convolution result | convolve image |
 | compute_pixel_val_using_gaussian | 3.9 | array_size, standard_deviation, decimal | each pixel value | compute each pixel using gaussian formula |
@@ -30,6 +31,7 @@ This repo contains the functions which appear in the turorails.
 | agglomerative_hierarchical_clustering | 5.15 | feature_vector_array, k, method, cluster_method | region result |segment using hierarchical clustering |
 | hough_transform | 5.18 | image_region, theta | accumulator array | perform hough transform on the image |
 | compute_similarity_between_point_and_image | 6.4 | coordinate, left_image, right_image, k | similarity array | compute the similarity of one pixel of left image with the right image |
+| RANSAC | 6.8 | left_point, right_point, thres, trials, decimal | best estimation of the model | find the true correspondence between the two images |
 | compute_harris_corner_detector | 6.9 | Ix, Iy, k, length | R array | computer harris corner detector |
 | compute_z_from_two_coplanar_camera | 7.1 |  f, B, left_coordinate, right_coordinate, pixel_size, coplanar, decimal | z value | compute z value from two coplanar camera |
 | compute_distance_between_point_and_horopter | 7.5 | baseline_length, angle_z_baseline, a_l, a_r | distance | compute distance between point and horoper |
