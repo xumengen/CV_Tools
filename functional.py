@@ -230,6 +230,40 @@ class Tutorail_solver:
                 result_array[i][j] = np.sum(pad_array_1[i:length+i, j:length+j] * pad_array_2[i:length+i, j:length+j])
         return result_array
         
+    # tutorial 6_8
+    def RANSAC(self, left_point, right_point, thres, trials, decimal=2):
+        """
+        """
+        assert len(left_point) == len(right_point)
+        left_point = np.array(left_point)
+        right_point = np.array(right_point)
+        result_list = []
+        index_list = []
+        for i in range(len(trials)):
+            translation = left_point[i] - right_point[i]
+            count = 0
+            tmp_list = []
+            for j in range(left_point.shape[0]):
+                if j == i:
+                    continue
+                else:
+                    new_right_point = left_point[j] - translation
+                    dist = self.compute_SAD_diff(new_right_point, right_point[j])
+                    if dist < thres: 
+                        count += 1
+                        tmp_list.append(j)
+            result_list.append(count) 
+            index_list.append(tmp_list)
+            count = 0
+        max_index = result_list.index(max(result_list))
+        translation_list = []
+        translation_list.append(left_point[max_index] - right_point[max_index])
+        for i in index_list[max_index]:
+            translation_list.append(left_point[i] - right_point[i])
+        final_index_list = np.array([max_index]+index_list[max_index]) + 1
+        print("the result of true correspondence is \n {}".format(final_index_list))
+        return np.around(np.mean(np.array(translation_list), axis=0), decimal)
+
     # tutorial 5_6
     def region_growing(self, feature_vector_array, method='SAD', thres=12, mode='hvd', start=(0,0)):
         """
@@ -328,7 +362,7 @@ class Tutorail_solver:
                     result_list.append(coordinate)
         return np.array(result_list)
 
-    # region 5_8
+    # tutorial 5_8
     def region_merge(self, feature_vector_array, method='SAD', thres=12, mode='hvd', start=(0,0), result_array=[]):  
         """
         """

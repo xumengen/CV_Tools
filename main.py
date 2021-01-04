@@ -36,19 +36,19 @@ if __name__ == '__main__':
     
     # left_image = [[4, 7, 6, 7], [3, 4, 5, 4], [8, 7, 6, 8]]
     # right_image = [[7, 6, 7, 5], [4, 5, 4, 5], [7, 6, 8, 7]]
-    left_image = [[9, 3, 6, 2, 3], 
-                  [9, 8, 7, 7, 6], 
-                  [5, 0, 6, 1, 7],
-                  [0, 0, 4, 6, 0],
-                  [2, 1, 5, 1, 9]]
-    right_image = [[2, 9, 0, 2, 2], 
-                   [6, 7, 7, 6, 3], 
-                   [0, 6, 0, 0, 4],
-                   [0, 2, 6, 2, 5],
-                   [3, 0, 5, 1, 0]]
-    coordinate = [3, 3]
-    result = solver.compute_similarity_between_point_and_image(coordinate, left_image, right_image)
-    print(result)
+    # left_image = [[9, 3, 6, 2, 3], 
+    #               [9, 8, 7, 7, 6], 
+    #               [5, 0, 6, 1, 7],
+    #               [0, 0, 4, 6, 0],
+    #               [2, 1, 5, 1, 9]]
+    # right_image = [[2, 9, 0, 2, 2], 
+    #                [6, 7, 7, 6, 3], 
+    #                [0, 6, 0, 0, 4],
+    #                [0, 2, 6, 2, 5],
+    #                [3, 0, 5, 1, 0]]
+    # coordinate = [3, 3]
+    # result = solver.compute_similarity_between_point_and_image(coordinate, left_image, right_image)
+    # print(result)
 
     # Ix = [[1, 0, 0, 0, 0], [-1, 1, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 0, 0, 0]]
     # Iy = [[1, -1, 0, 0, 0], [-1, 0, -1, 0, 0], [1, 1, 1, 0, 0], [0, 0, 0, 0, 0]]
@@ -209,3 +209,17 @@ if __name__ == '__main__':
     # solver.best_template_match(template_list=[A], image=B, method='all', decimal=4)
     # solver.best_template_match([A], C, method='all', decimal=4)
     # solver.best_template_match([B], C, method='all', decimal=4)
+
+
+    left_point = [[187, 168],
+                  [203, 290],
+                  [215, 87],
+                  [234, 28],
+                  [366, 142]]
+    
+    right_point = [[269, 243],
+                   [101, 394],
+                   [336, 178],
+                   [135, 128],
+                   [269, 243]]
+    print(solver.RANSAC(left_point, right_point, thres=20, trials=[0, 1, 2], decimal=2))
