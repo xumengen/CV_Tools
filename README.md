@@ -5,14 +5,10 @@
 [![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
 This repo contains the functions which appear in the turorails.
   - Let's gogogo
-- [CV_Tools](#cv_tools)
     - [Main Features](#main-features)
     - [Installation](#installation)
     - [Usage](#usage)
-    - [Plugins](#plugins)
-    - [Development](#development)
     - [Todos](#todos)
-
 
 
 ### Main Features
@@ -42,17 +38,6 @@ This repo contains the functions which appear in the turorails.
 | best_template_match | 9.3 | template_list, image, method, decimal | the the template which matches the image best | find the best match template |
 | compute_cross_ratio | 9.10 | p1, p2, p3, p4, method, center_coordinate, magnification_factors, decimal | cross ratio | compute cross ratio |
 | compute_object_class | 10.4 | class_list, feature_vector_list, object_feature_vector, k | class label | compute the class of the object |
- 
-* 
-* 
-* 
-* 
-* 
-*
-* 
-* 
-* 
-
 
 
 ### Installation
@@ -64,26 +49,15 @@ git clone --recursive https://github.com/xumengen/CV_Tools.git
 ### Usage
 
 ```
-python main.py
+step_1: choose the function you want to ues in "main.py"
+step_2: run "python main.py"
 ```
-
-
-### Plugins
-
-
-
-
-### Development
-
-
-
-
-
 
 
 ### Todos
 
- - 
+ - modify the 3d to 2d point function
+ - add RANSAC
 
 License
 
