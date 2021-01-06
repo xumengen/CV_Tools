@@ -957,10 +957,10 @@ class Tutorail_solver:
         if method == '2d':
             assert center_coordinate
             assert magnification_factors
-            p1 = self.compute_3d_point_2d_coordinate(ori_coordinate=p1, image_principal_point=center_coordinate, magnification_factors=magnification_factors, decimal=decimal)
-            p2 = self.compute_3d_point_2d_coordinate(ori_coordinate=p2, image_principal_point=center_coordinate, magnification_factors=magnification_factors, decimal=decimal)
-            p3 = self.compute_3d_point_2d_coordinate(ori_coordinate=p3, image_principal_point=center_coordinate, magnification_factors=magnification_factors, decimal=decimal)
-            p4 = self.compute_3d_point_2d_coordinate(ori_coordinate=p4, image_principal_point=center_coordinate, magnification_factors=magnification_factors, decimal=decimal)
+            p1 = self.compute_3d_point_2d_uv_coordinate(ori_coordinate=p1, image_principal_point=center_coordinate, magnification_factors=magnification_factors, decimal=decimal)
+            p2 = self.compute_3d_point_2d_uv_coordinate(ori_coordinate=p2, image_principal_point=center_coordinate, magnification_factors=magnification_factors, decimal=decimal)
+            p3 = self.compute_3d_point_2d_uv_coordinate(ori_coordinate=p3, image_principal_point=center_coordinate, magnification_factors=magnification_factors, decimal=decimal)
+            p4 = self.compute_3d_point_2d_uv_coordinate(ori_coordinate=p4, image_principal_point=center_coordinate, magnification_factors=magnification_factors, decimal=decimal)
         p1 = np.array(p1)
         p2 = np.array(p2)
         p3 = np.array(p3)
