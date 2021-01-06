@@ -61,7 +61,6 @@ step_2: run "python main.py"
 
 ### Todos
 
- - modify the 3d to 2d point function
- - add RANSAC
+ - 
 
 **Free Software, Yeah!**
