@@ -47,6 +47,8 @@ This repo contains the functions which appear in the turorails.
 
 ```
 git clone --recursive https://github.com/xumengen/CV_Tools.git
+cd CV_Tools
+enjoy it!
 ```
 
 ### Usage
@@ -59,7 +61,6 @@ step_2: run "python main.py"
 
 ### Todos
 
- - modify the 3d to 2d point function
- - add RANSAC
+ - 
 
 **Free Software, Yeah!**
