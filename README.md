@@ -47,6 +47,8 @@ This repo contains the functions which appear in the turorails.
 
 ```
 git clone --recursive https://github.com/xumengen/CV_Tools.git
+cd CV_Tools
+enjoy your use!
 ```
 
 ### Usage
