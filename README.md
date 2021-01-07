@@ -31,6 +31,7 @@ This repo contains the functions which appear in the turorails.
 | agglomerative_hierarchical_clusteringv2 | 5.15 | feature_vector_array, k, method, cluster_method | region result |segment using hierarchical clustering |
 | hough_transform | 5.18 | image_region, theta | accumulator array | perform hough transform on the image |
 | compute_similarity_between_point_and_image | 6.4 | coordinate, left_image, right_image, k | similarity array | compute the similarity of one pixel of left image with the right image |
+| compute_dist_between_two_feature_vector_array | 6.5 | array_1, array_2, method='SAD' | dist array | compute dist between two arrays |
 | RANSAC | 6.8 | left_point, right_point, thres, trials, decimal | best estimation of the model | find the true correspondence between the two images |
 | compute_harris_corner_detector | 6.9 | Ix, Iy, k, length | R array | computer harris corner detector |
 | compute_z_from_two_coplanar_camera | 7.1 |  f, B, left_coordinate, right_coordinate, pixel_size, coplanar, decimal | z value | compute z value from two coplanar camera |
