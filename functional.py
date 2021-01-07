@@ -622,9 +622,9 @@ class Tutorail_solver:
         Return: m1*m2
         """
 
-        assert len(array_1.shape) == 2 and len(array_2.shape) == 2
         array_1 = np.array(array_1)
         array_2 = np.array(array_2)
+        assert len(array_1.shape) == 2 and len(array_2.shape) == 2
         result_array = list()
         for i in range(array_1.shape[0]):
             dist = list()

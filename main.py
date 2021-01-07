@@ -62,7 +62,19 @@ if __name__ == '__main__':
     # solver.region_merge(feature_vector_array)
     # solver.k_means(feature_vector_array, 2, [[5, 10, 15], [10, 10, 25]])
     # solver.region_split_and_merge(feature_vector_array)
-    # solver.agglomerative_hierarchical_clustering(feature_vector_array, k=4)
+    # solver.agglomerative_hierarchical_clusteringv2(feature_vector_array, k=3)
+
+    left_array = [[10, 4],
+                  [3, 8],
+                  [0, 2],
+                  [6, 9],
+                  [9, 1]]
+    right_array = [[3, 7],
+                   [1, 1],
+                   [5, 7],
+                   [8, 0],
+                   [1, 2]]
+    print(solver.compute_dist_between_two_feature_vector_array(left_array, right_array))
 
     # input_array = [[0, 0, 0, 0, 0, 0, 0, 0, 0],
     #                [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -98,8 +110,8 @@ if __name__ == '__main__':
     # result = solver.compute_thin_lens_equation(f=35, z1=500, z2=None)
     # print(result)
 
-    result = solver.compute_3d_point_2d_uv_coordinate([10, 10, 500], [244, 180], [925, 740], decimal=2)
-    print(result)
+    # result = solver.compute_3d_point_2d_uv_coordinate([10, 10, 500], [244, 180], [925, 740], decimal=2)
+    # print(result)
 
     # ori_imgae = [[[205, 195],
     #               [238, 203]],
