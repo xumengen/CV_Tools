@@ -28,7 +28,6 @@ This repo contains the functions which appear in the turorails.
 | region_merge | 5.8 | feature_vector_array, method, thres, mode, start, result_array | region result | segment using region merge |
 | region_split_and_merge | 5.10 | feature_vector_array, method, thres, mode, start | region result | segment using region split and merge |
 | k_means | 5.12 | feature_vector_array, k, ori_feature_vetor_array, method | region result | segment using k means |
-~~| agglomerative_hierarchical_clustering | 5.15 | feature_vector_array, k, method, cluster_method | region result |segment using hierarchical clustering |~~
 | agglomerative_hierarchical_clusteringv2 | 5.15 | feature_vector_array, k, method, cluster_method | region result |segment using hierarchical clustering |
 | hough_transform | 5.18 | image_region, theta | accumulator array | perform hough transform on the image |
 | compute_similarity_between_point_and_image | 6.4 | coordinate, left_image, right_image, k | similarity array | compute the similarity of one pixel of left image with the right image |
