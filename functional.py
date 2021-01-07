@@ -542,10 +542,12 @@ class Tutorail_solver:
 
         feature_vector_array = np.array(feature_vector_array)
         cluster_array = feature_vector_array.reshape(-1, feature_vector_array.shape[-1])
+        old_cluster_array = cluster_array.copy()
 
         record_list = []
         for i in range(1, cluster_array.shape[0]+1):
             record_list.append([i])
+        step = 1
         while cluster_array.shape[0] > k:
             result_list = []
             for i in range(cluster_array.shape[0]):
@@ -591,16 +593,20 @@ class Tutorail_solver:
                         tmp.append(m)
                 new_record_list.append(tmp)
                 index = np.array(cluster_result[i]) - 1
-                if cluster_method == 'centroid':
-                    new_cluster_array.append(np.mean(cluster_array[index], axis=0))
             for i in range(1, cluster_array.shape[0]+1):
                 if i in new_cluster_index:
                     continue
                 else:
-                    new_cluster_array.append(cluster_array[i-1])
-                new_record_list.append(record_list[i-1])
+                    new_record_list.append(record_list[i-1])
+            for i in range(len(new_record_list)):
+                cluster_index_list = np.array(new_record_list[i]) - 1
+                if cluster_method == 'centroid':
+                    new_cluster_array.append(np.mean(old_cluster_array[cluster_index_list], axis=0))
             cluster_array = np.array(new_cluster_array)
             record_list = new_record_list
+            print("the feature of cluster of {}-th step is\n {}\n".format(step, cluster_array))
+            print("the result of cluster of {}-th step is\n {}\n".format(step, record_list))
+            step += 1
 
         print("the result of agglomerative hierarchical clustering is\n {}\n".format(record_list))
         return record_list
