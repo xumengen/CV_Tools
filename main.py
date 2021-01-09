@@ -34,8 +34,8 @@ if __name__ == '__main__':
     # result_1, result_2, result_3 = solver.compute_object_class(class_list, feature_vector_list, object_feature_vector, k=3)
     # print("the result of nearest mean classifier is {}.\nthe result of nearest neighbour classifier is {}.\nthe result ofk-nearest neighbour classifier is {}.".format(result_1, result_2, result_3))
     
-    # left_image = [[4, 7, 6, 7], [3, 4, 5, 4], [8, 7, 6, 8]]
-    # right_image = [[7, 6, 7, 5], [4, 5, 4, 5], [7, 6, 8, 7]]
+    left_image = [[4, 7, 6, 7], [3, 4, 5, 4], [8, 7, 6, 8]]
+    right_image = [[7, 6, 7, 5], [4, 5, 4, 5], [7, 6, 8, 7]]
     # left_image = [[9, 3, 6, 2, 3], 
     #               [9, 8, 7, 7, 6], 
     #               [5, 0, 6, 1, 7],
@@ -46,9 +46,10 @@ if __name__ == '__main__':
     #                [0, 6, 0, 0, 4],
     #                [0, 2, 6, 2, 5],
     #                [3, 0, 5, 1, 0]]
-    # coordinate = [3, 3]
-    # result = solver.compute_similarity_between_point_and_image(coordinate, left_image, right_image)
-    # print(result)
+    # row, col
+    coordinate = [2, 3]
+    result = solver.compute_similarity_between_point_and_image(coordinate, left_image, right_image)
+    print(result)
 
     # Ix = [[1, 0, 0, 0, 0], [-1, 1, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 0, 0, 0]]
     # Iy = [[1, -1, 0, 0, 0], [-1, 0, -1, 0, 0], [1, 1, 1, 0, 0], [0, 0, 0, 0, 0]]
@@ -64,17 +65,17 @@ if __name__ == '__main__':
     # solver.region_split_and_merge(feature_vector_array)
     # solver.agglomerative_hierarchical_clusteringv2(feature_vector_array, k=3)
 
-    left_array = [[10, 4],
-                  [3, 8],
-                  [0, 2],
-                  [6, 9],
-                  [9, 1]]
-    right_array = [[3, 7],
-                   [1, 1],
-                   [5, 7],
-                   [8, 0],
-                   [1, 2]]
-    print(solver.compute_dist_between_two_feature_vector_array(left_array, right_array))
+    # left_array = [[10, 4],
+    #               [3, 8],
+    #               [0, 2],
+    #               [6, 9],
+    #               [9, 1]]
+    # right_array = [[3, 7],
+    #                [1, 1],
+    #                [5, 7],
+    #                [8, 0],
+    #                [1, 2]]
+    # print(solver.compute_dist_between_two_feature_vector_array(left_array, right_array))
 
     # input_array = [[0, 0, 0, 0, 0, 0, 0, 0, 0],
     #                [0, 0, 0, 0, 0, 0, 0, 0, 0],
