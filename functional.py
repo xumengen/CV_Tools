@@ -816,15 +816,16 @@ class Tutorail_solver:
         result_array = np.around((1 / float(ori_coordinate[-1]) * np.dot(np.dot(array_1, array_2), array_3)), decimal)
         return result_array
     
-    def compute_3d_point_2d_xy_coordinate(self, ori_coordinate, f, decimal=2):
+    def compute_3d_point_2d_xy_coordinate(self, ori_coordinate, f):
         """
         """
         assert len(ori_coordinate) == 3
         array_1 = np.array([[1, 0, 0, 0],
                             [0, 1, 0, 0],
                             [0, 0, 1, 0]])
-        array_2 = np.array(ori_coordinate+[1.0])
-        result_array = np.around((f / float(ori_coordinate[-1]) * np.dot(array_1, array_2), decimal))
+        ori_coordinate.append(1.0)
+        array_2 = np.array(ori_coordinate).reshape(-1, 1)
+        result_array = ((f / float(ori_coordinate[-2])) * np.dot(array_1, array_2))
         return result_array
 
     # tutorial 2_12
@@ -933,7 +934,7 @@ class Tutorail_solver:
             tmp_list = []
             for j in range(len(correspond_index_2[0])):
                 correspond_2 = np.array([correspond_index_2[0][j], correspond_index_2[1][j]])
-                tmp_list.append(round(self.compute_eucli_distance(correspond_1, correspond_2), 2))
+                tmp_list.append(self.compute_eucli_distance(correspond_1, correspond_2))
             result_list.append(min(tmp_list))
         return np.mean(np.array(result_list))
 

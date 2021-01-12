@@ -34,8 +34,8 @@ if __name__ == '__main__':
     # result_1, result_2, result_3 = solver.compute_object_class(class_list, feature_vector_list, object_feature_vector, k=3)
     # print("the result of nearest mean classifier is {}.\nthe result of nearest neighbour classifier is {}.\nthe result ofk-nearest neighbour classifier is {}.".format(result_1, result_2, result_3))
     
-    left_image = [[4, 7, 6, 7], [3, 4, 5, 4], [8, 7, 6, 8]]
-    right_image = [[7, 6, 7, 5], [4, 5, 4, 5], [7, 6, 8, 7]]
+    # left_image = [[4, 7, 6, 7], [3, 4, 5, 4], [8, 7, 6, 8]]
+    # right_image = [[7, 6, 7, 5], [4, 5, 4, 5], [7, 6, 8, 7]]
     # left_image = [[9, 3, 6, 2, 3], 
     #               [9, 8, 7, 7, 6], 
     #               [5, 0, 6, 1, 7],
@@ -47,9 +47,9 @@ if __name__ == '__main__':
     #                [0, 2, 6, 2, 5],
     #                [3, 0, 5, 1, 0]]
     # row, col
-    coordinate = [2, 3]
-    result = solver.compute_similarity_between_point_and_image(coordinate, left_image, right_image)
-    print(result)
+    # coordinate = [2, 3]
+    # result = solver.compute_similarity_between_point_and_image(coordinate, left_image, right_image)
+    # print(result)
 
     # Ix = [[1, 0, 0, 0, 0], [-1, 1, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 0, 0, 0]]
     # Iy = [[1, -1, 0, 0, 0], [-1, 0, -1, 0, 0], [1, 1, 1, 0, 0], [0, 0, 0, 0, 0]]
@@ -112,6 +112,9 @@ if __name__ == '__main__':
     # print(result)
 
     # result = solver.compute_3d_point_2d_uv_coordinate([10, 10, 500], [244, 180], [925, 740], decimal=2)
+    # print(result)
+
+    # result = solver.compute_3d_point_2d_xy_coordinate(ori_coordinate=[0.4, 0.5, 2.5], f=30)
     # print(result)
 
     # ori_imgae = [[[205, 195],
@@ -194,7 +197,7 @@ if __name__ == '__main__':
     # image_2 = [0,0,1,2,0,3,1,0,1,0]
     # image_3 = [1,1,2,0,0,1,0,3,1,1]
     # new_image = [2,1,1,0,1,1,0,2,0,1]
-    # print(solver.best_template_match([image_1, image_2, image_3], new_image, method='normalised_cross_correlation'))
+    # print(solver.best_template_match([image_1, image_2, image_3], new_image, method='normalised_cross_correlation', decimal=5))
 
     # p1 = [40,-40,400]
     # p2 = [23.3,-6.7,483.3]
