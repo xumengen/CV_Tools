@@ -89,8 +89,8 @@ class Tutorail_solver:
 
         # background substraction
         def bg_sub():
-            bg_array = np.empty(pixel_array[0].shape)
-            result = np.empty(pixel_array.shape, dtype=int)
+            bg_array = np.zeros(pixel_array[0].shape)
+            result = np.zeros(pixel_array.shape, dtype=int)
             for i in range(len(pixel_array)):
                 bg_array = (1 - beta) * bg_array + beta * pixel_array[i]
                 diff_array = abs(pixel_array[i] - bg_array)
@@ -184,12 +184,13 @@ class Tutorail_solver:
         """
         """
         assert k % 2 != 0
+        coordinate = coordinate[::-1]
         left_array = np.array(left_image)
         right_array = np.array(right_image)
         interval = (k - 1) // 2
         ori_array = left_array[coordinate[0]-1-interval:coordinate[0]+interval, coordinate[1]-1-interval:coordinate[1]+interval]
         compare_array = np.pad(right_array, ((interval, interval), (interval, interval)), 'constant', constant_values=(0, 0))
-        result_array = np.empty(left_array.shape)
+        result_array = np.zeros(left_array.shape)
         for i in range(len(right_array)):
             for j in range(len(right_array[0])):
                 compare_sub_array = compare_array[i:k+i, j:k+j]
@@ -224,7 +225,7 @@ class Tutorail_solver:
         interval = (length - 1) // 2
         pad_array_1 = np.pad(array_1, ((interval, interval), (interval, interval)), 'constant', constant_values=(0, 0))
         pad_array_2 = np.pad(array_2, ((interval, interval), (interval, interval)), 'constant', constant_values=(0, 0))
-        result_array = np.empty(array_1.shape)
+        result_array = np.zeros(array_1.shape)
         for i in range(len(array_1)):
             for j in range(len(array_1[0])):
                 result_array[i][j] = np.sum(pad_array_1[i:length+i, j:length+j] * pad_array_2[i:length+i, j:length+j])
@@ -356,7 +357,7 @@ class Tutorail_solver:
             feature_vector = feature_vector_array[coordinate[0]][coordinate[1]]
             if method == 'SAD':
                 distance = self.compute_SAD_diff(compare_feature_vector, feature_vector)
-                if distance <= thres:
+                if distance < thres:
                     result_array[coordinate[0]][coordinate[1]] = result_array[i][j]
                     visited_array[coordinate[0]][coordinate[1]] = True
                     result_list.append(coordinate)
@@ -511,7 +512,7 @@ class Tutorail_solver:
         assert k == len(ori_feature_vetor_array)
         feature_vector_array = np.array(feature_vector_array)
         ori_feature_vetor_array = np.array(ori_feature_vetor_array)
-        result_array = np.empty(feature_vector_array.shape[:-1])
+        result_array = np.zeros(feature_vector_array.shape[:-1])
 
         count = 1
         while True:
@@ -800,7 +801,7 @@ class Tutorail_solver:
             print("Your input kidding me!!!")
 
     # tutorial 2_11
-    def compute_3d_point_2d_uv_coordinate(self, ori_coordinate, image_principal_point, magnification_factors):
+    def compute_3d_point_2d_uv_coordinate(self, ori_coordinate, image_principal_point, magnification_factors, decimal=2):
         """
         """
         assert len(ori_coordinate) == 3
@@ -1068,7 +1069,7 @@ class Tutorail_solver:
             return final_result_list
 
     # tutorial 9_10
-    def compute_cross_ratio(self, p1, p2, p3, p4, method='3d', center_coordinate=None, magnification_factors=None, decimal=1):
+    def compute_cross_ratio(self, p1, p2, p3, p4, method='3d', center_coordinate=None, magnification_factors=None, decimal=2):
         """
         """
         if method == '2d':

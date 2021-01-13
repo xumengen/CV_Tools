@@ -64,33 +64,61 @@ if __name__ == '__main__':
     # result = solver.convolution(mask, I, 'same')
     # print(result)
 
-    # result = solver.compute_pixel_val_using_gaussian((3, 3), standard_deviation=0.5, decimal=2)
+    # 3_9
+    # result = solver.compute_pixel_val_using_gaussian((3, 3), standard_deviation=0.46, decimal=2)
+    # print(result)
     # L = [[-1, -1, -1],
     #      [-1, 8, -1],
     #      [-1, -1, -1]]
     # print(solver.convolution(result, L, 'same'))
 
-    # result = solver.compute_distance_between_point_and_horopter(400, 60, -15, 15)
-    # print(result)
+    # 5_4
+    # input_array = [[0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #                [0, 0, 1, 0, 1, 1, 1, 0, 0],
+    #                [0, 0, 0, 0, 1, 1, 1, 0, 0],
+    #                [0, 0, 1, 1, 0, 1, 1, 0, 0],
+    #                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #                [0, 0, 0, 0, 0, 0, 0, 0, 0],]
+    # input_array = [[1, 1, 0],
+    #                [1, 0 ,1],
+    #                [0, 0, 0]]
+    # output_array = solver.dilation(input_array, 'hvd')
+    # print(output_array)
+    # output_array = solver.erosion(output_array, 'hvd')
+    # print(output_array)
 
-    # patch_1 = [[190, 200, 90, 110, 90], [190, 200, 90, 110, 90]]
-    # patch_2 = [[110, 170, 160, 70, 70], [110, 170, 160, 70, 70]]
-    # patch_3 = [[100, 60, 170, 200, 90], [100, 60, 170, 200, 90]]
-    # patch_4 = [[90, 100, 100, 190, 190], [90, 100, 100, 190, 190]]
-    # result_1, result_2 = solver.compute_segment_moving_object_from_background([patch_1, patch_2, patch_3, patch_4], 50, 0.5)
-    # print("the result of image difference is \n{},\nthe result of background substraction is \n{}".format(result_1, result_2))
+    # output_array = solver.erosion(input_array, 'hv')
+    # print(output_array)
+    # output_array = solver.dilation(output_array, 'hv')
+    # print(output_array)
 
-    # print(solver.compute_depth_of_scence_point([50, 50, 0], [25, 50, 1], velocity=0.1, move_method='x-axis', pixel_size=0.1, focal_length=35))
-    # print(solver.compute_depth_of_scence_point([50, 70, 0], [45, 63, 1], velocity=0.1, move_method='z-axis',center_coordinate=[100, 140]))
+    # 5_6, 5_8, 5_10, 5_12, 5_15
+    # feature_vector_array = [[[5, 10, 15], [10, 15, 30], [10, 10, 25]], 
+    #                         [[10, 10, 15], [5, 20, 15], [10, 5, 30]], 
+    #                         [[5, 5, 15], [30, 10, 5], [30, 10, 10]]]
+    # solver.region_growing(feature_vector_array, method='SAD', thres=12, mode='hvd', start=(0, 0))
+    # solver.region_merge(feature_vector_array, method='SAD', thres=12, mode='hvd', start=(0, 0))
+    # solver.k_means(feature_vector_array, k=2, ori_feature_vetor_array=[[5, 10, 15], [10, 10, 25]], method='SAD')
+    # solver.region_split_and_merge(feature_vector_array)
+    # solver.agglomerative_hierarchical_clusteringv2(feature_vector_array, k=3, method='SAD', cluster_method='centroid')
 
-    # class_list = ['A', 'A', 'B', 'B']
-    # feature_vector_list = [[7, 7], [7, 4], [3, 4], [1, 4]]
-    # object_feature_vector = [3, 7]
-    # result_1, result_2, result_3 = solver.compute_object_class(class_list, feature_vector_list, object_feature_vector, k=3)
-    # print("the result of nearest mean classifier is {}.\nthe result of nearest neighbour classifier is {}.\nthe result ofk-nearest neighbour classifier is {}.".format(result_1, result_2, result_3))
-    
-    # left_image = [[4, 7, 6, 7], [3, 4, 5, 4], [8, 7, 6, 8]]
-    # right_image = [[7, 6, 7, 5], [4, 5, 4, 5], [7, 6, 8, 7]]
+    # 5_18
+    # image_region = [[1, 0, 0, 1],
+    #                 [0, 1, 0, 0],
+    #                 [0, 0, 1, 0]]
+    # theta_1 = [0, 45, 90, 135]
+    # theta_2 = [0, 30, 60, 90, 120, 150]
+    # print(solver.hough_transform(image_region, theta_1))
+    # print(solver.hough_transform(image_region, theta_2))
+
+    # 6_4
+    # left_image = [[4, 7, 6, 7], 
+    #               [3, 4, 5, 4], 
+    #               [8, 7, 6, 8]]
+    # right_image = [[7, 6, 7, 5], 
+    #                [4, 5, 4, 5], 
+    #                [7, 6, 8, 7]]
     # left_image = [[9, 3, 6, 2, 3], 
     #               [9, 8, 7, 7, 6], 
     #               [5, 0, 6, 1, 7],
@@ -101,25 +129,12 @@ if __name__ == '__main__':
     #                [0, 6, 0, 0, 4],
     #                [0, 2, 6, 2, 5],
     #                [3, 0, 5, 1, 0]]
-    # row, col
-    # coordinate = [2, 3]
-    # result = solver.compute_similarity_between_point_and_image(coordinate, left_image, right_image)
+    ## 坐标从之前的行列坐标改成了xy坐标
+    # coordinate = [2, 2]
+    # result = solver.compute_similarity_between_point_and_image(coordinate, left_image, right_image, k=3)
     # print(result)
 
-    # Ix = [[1, 0, 0, 0, 0], [-1, 1, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 0, 0, 0]]
-    # Iy = [[1, -1, 0, 0, 0], [-1, 0, -1, 0, 0], [1, 1, 1, 0, 0], [0, 0, 0, 0, 0]]
-    # result = solver.compute_harris_corner_detector(Ix, Iy)
-    # print(result)
-
-    # feature_vector_array = [[[5, 10, 15], [10, 15, 30], [10, 10, 25]], 
-    #                         [[10, 10, 15], [5, 20, 15], [10, 5, 30]], 
-    #                         [[5, 5, 15], [30, 10, 5], [30, 10, 10]]]
-    # solver.region_growing(feature_vector_array)
-    # solver.region_merge(feature_vector_array)
-    # solver.k_means(feature_vector_array, 2, [[5, 10, 15], [10, 10, 25]])
-    # solver.region_split_and_merge(feature_vector_array)
-    # solver.agglomerative_hierarchical_clusteringv2(feature_vector_array, k=3)
-
+    # 6_5
     # left_array = [[10, 4],
     #               [3, 8],
     #               [0, 2],
@@ -132,44 +147,52 @@ if __name__ == '__main__':
     #                [1, 2]]
     # print(solver.compute_dist_between_two_feature_vector_array(left_array, right_array))
 
-    # input_array = [[0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #                [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #                [0, 0, 1, 0, 1, 1, 1, 0, 0],
-    #                [0, 0, 0, 0, 1, 1, 1, 0, 0],
-    #                [0, 0, 1, 1, 0, 1, 1, 0, 0],
-    #                [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #                [0, 0, 0, 0, 0, 0, 0, 0, 0],]
+    # 6_8
+    # left_point = [[187, 168],
+    #               [203, 290],
+    #               [215, 87],
+    #               [234, 28],
+    #               [366, 142]]
+    
+    # right_point = [[269, 243],
+    #                [101, 394],
+    #                [336, 178],
+    #                [135, 128],
+    #                [269, 243]]
+    # print(solver.RANSAC(left_point, right_point, thres=20, trials=[0, 1, 2], decimal=2))
 
-    # input_array = [[1, 1, 0],
-    #                [1, 0 ,1],
-    #                [0, 0, 0]]
-    # output_array = solver.dilation(input_array, 'hv')
-    # print(output_array)
-    # output_array = solver.erosion(output_array, 'hv')
-    # print(output_array)
+    # 6_9
+    # Ix = [[1, 0, 0, 0, 0], 
+    #       [-1, 1, 0, 0, 0], 
+    #       [0, 0, 1, 0, 0], 
+    #       [0, 0, 0, 0, 0]]
+    # Iy = [[1, -1, 0, 0, 0], 
+    #       [-1, 0, -1, 0, 0], 
+    #       [1, 1, 1, 0, 0], 
+    #       [0, 0, 0, 0, 0]]
+    # result = solver.compute_harris_corner_detector(Ix, Iy, k=0.05, length=3)
+    # print(result)
 
-    # output_array = solver.erosion(input_array, 'hv')
-    # print(output_array)
-    # output_array = solver.dilation(output_array, 'hv')
-    # print(output_array)
+    # 7_1 stereo
+    # print(solver.compute_z_from_two_coplanar_camera(f=30, B=400, pixel_size=0.1, left_coordinate=(231,345), right_coordinate=(45, 345), decimal=2, coplanar='x-axis'))
 
-    # image_region = [[1, 0, 0, 1],
-    #                 [0, 1, 0, 0],
-    #                 [0, 0, 1, 0]]
-    # theta_1 = [0, 45, 90, 135]
-    # theta_2 = [0, 30, 60, 90, 120, 150]
-    # print(solver.hough_transform(image_region, theta_1))
-    # print(solver.hough_transform(image_region, theta_2))
+    # 7_5
+    # result = solver.compute_distance_between_point_and_horopter(baseline_length=400, angle_z_baseline=60, a_l=-15, a_r=15)
+    # print(result)
 
-    # mask = [[1, 0.5, 0.1],
-    #         [0.5, 0.25, 0.05],
-    #         [0.1, 0.05, 0.01]]
-    # I = [[1, 1, 1],
-    #      [1, 1, 1],
-    #      [1, 1, 1]]
-    # print(solver.convolution(mask, I, 'same'))
+    # 8_4
+    # print(solver.compute_depth_of_scence_point([50, 50, 0], [25, 50, 1], velocity=0.1, move_method='x-axis', pixel_size=0.1, focal_length=35))
+    # print(solver.compute_depth_of_scence_point([50, 70, 0], [45, 63, 1], velocity=0.1, move_method='z-axis', center_coordinate=[100, 140]))
 
-    # tutorial9
+    # 8_7
+    # patch_1 = [[190, 200, 90, 110, 90]]
+    # patch_2 = [[110, 170, 160, 70, 70]]
+    # patch_3 = [[100, 60, 170, 200, 90]]
+    # patch_4 = [[90, 100, 100, 190, 190]]
+    # result_1, result_2 = solver.compute_segment_moving_object_from_background([patch_1, patch_2, patch_3, patch_4], thres=50, beta=0.5)
+    # print("the result of image difference is \n{},\nthe result of background substraction is \n{}".format(result_1, result_2))
+
+    # 9_1, 9_4
     # template = [[100, 150, 200],
     #             [150, 10, 200],
     #             [200, 200, 250]]
@@ -189,6 +212,7 @@ if __name__ == '__main__':
     #      [1, 1, 1, 0]]
     # print(solver.find_object_location(template, I, 'minimum_distance'))
 
+    # 9_3
     # template_1 = [[1, 1, 1],
     #               [1, 0, 0],
     #               [1, 1, 1]]
@@ -201,25 +225,40 @@ if __name__ == '__main__':
     # image = [[1, 1, 1],
     #          [1, 0, 0],
     #          [1, 1, 1]]
-    # print(solver.best_template_match([template_1, template_2, template_3], image, method='cross_correlation'))
-    # print(solver.best_template_match([template_1, template_2, template_3], image, method='normalised_cross_correlation'))
-    # print(solver.best_template_match([template_1, template_2, template_3], image, method='correlation_coefficient'))
-    # print(solver.best_template_match([template_1, template_2, template_3], image, method='SAD'))
+    # print(solver.best_template_match([template_1, template_2, template_3], image, method='cross_correlation', decimal=2))
+    # print(solver.best_template_match([template_1, template_2, template_3], image, method='normalised_cross_correlation', decimal=2))
+    # print(solver.best_template_match([template_1, template_2, template_3], image, method='correlation_coefficient', decimal=2))
+    # print(solver.best_template_match([template_1, template_2, template_3], image, method='SAD', decimal=2))
 
+    # 9_7
     # image_1 = [2,0,0,5,1,0,0,0,3,1]
     # image_2 = [0,0,1,2,0,3,1,0,1,0]
     # image_3 = [1,1,2,0,0,1,0,3,1,1]
     # new_image = [2,1,1,0,1,1,0,2,0,1]
-    # print(solver.best_template_match([image_1, image_2, image_3], new_image, method='normalised_cross_correlation', decimal=5))
+    # print(solver.best_template_match([image_1, image_2, image_3], new_image, method='normalised_cross_correlation', decimal=4))
 
+    # 9_10
     # p1 = [40,-40,400]
     # p2 = [23.3,-6.7,483.3]
     # p3 = [15,10,525]
     # p4 = [-10,60,650]
-    # print(solver.compute_cross_ratio(p1, p2, p3, p4, method='3d'))
-    # print(solver.compute_cross_ratio(p1, p2, p3, p4, method='2d', center_coordinate=[244,180], magnification_factors=[925, 740]))
+    # print(solver.compute_cross_ratio(p1, p2, p3, p4, method='3d', decimal=2))
+    # print(solver.compute_cross_ratio(p1, p2, p3, p4, method='2d', center_coordinate=[244,180], magnification_factors=[925, 740], decimal=2))
 
-    # print(solver.compute_z_from_two_coplanar_camera(f=30, B=400, pixel_size=0.1, left_coordinate=(231,345), right_coordinate=(45, 345), decimal=0, coplanar='x-axis'))
+    # 10_4
+    # class_list = ['A', 'A', 'B', 'B']
+    # feature_vector_list = [[7, 7], [7, 4], [3, 4], [1, 4]]
+    # object_feature_vector = [3, 7]
+    # result_1, result_2, result_3 = solver.compute_object_class(class_list, feature_vector_list, object_feature_vector, k=3)
+    # print("the result of nearest mean classifier is {}.\nthe result of nearest neighbour classifier is {}.\nthe result ofk-nearest neighbour classifier is {}.".format(result_1, result_2, result_3))
+
+    # mask = [[1, 0.5, 0.1],
+    #         [0.5, 0.25, 0.05],
+    #         [0.1, 0.05, 0.01]]
+    # I = [[1, 1, 1],
+    #      [1, 1, 1],
+    #      [1, 1, 1]]
+    # print(solver.convolution(mask, I, 'same'))
 
     # A = [[0, 1, 0, 0],
     #      [1, 0 ,0, 0],
@@ -236,24 +275,10 @@ if __name__ == '__main__':
     #      [0, 1, 0, 1],
     #      [0, 1, 1, 1]]
     # solver.best_template_match(template_list=[A], image=B, method='all', decimal=4)
-    # solver.best_template_match([A], C, method='all', decimal=4)
-    # solver.best_template_match([B], C, method='all', decimal=4)
+    # solver.best_template_match(template_list=[A], C, method='all', decimal=4)
+    # solver.best_template_match(template_list=[B], C, method='all', decimal=4)
 
-
-    # left_point = [[187, 168],
-    #               [203, 290],
-    #               [215, 87],
-    #               [234, 28],
-    #               [366, 142]]
-    
-    # right_point = [[269, 243],
-    #                [101, 394],
-    #                [336, 178],
-    #                [135, 128],
-    #                [269, 243]]
-    # print(solver.RANSAC(left_point, right_point, thres=20, trials=[0, 1, 2], decimal=2))
-
-    feature_vector_array = [[[20, 10, 5], [10, 20, 15]], 
-                            [[15, 5, 5], [5, 5, 20]], 
-                            [[15, 15, 15], [20, 15, 10]]]
-    solver.region_growing(feature_vector_array)
+    # feature_vector_array = [[[20, 10, 5], [10, 20, 15]], 
+    #                         [[15, 5, 5], [5, 5, 20]], 
+    #                         [[15, 15, 15], [20, 15, 10]]]
+    # solver.region_growing(feature_vector_array)

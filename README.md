@@ -37,7 +37,7 @@ This repo contains the functions which appear in the turorails.
 | compute_z_from_two_coplanar_camera | 7.1 |  f, B, left_coordinate, right_coordinate, pixel_size, coplanar, decimal | z value | compute z value from two coplanar camera |
 | compute_distance_between_point_and_horopter | 7.5 | baseline_length, angle_z_baseline, a_l, a_r | distance | compute distance between point and horoper |
 | compute_depth_of_scence_point | 8.4 | frame_1_point, frame_2_point, velocity, move_method, pixel_size, focal_length, center_coordinate | depth value | compute depth value |
-| compute_segment_moving_object_from_background | 8.5 | pixel_patches, thres, beta, method | segment result | segment the moving object from background |
+| compute_segment_moving_object_from_background | 8.7 | pixel_patches, thres, beta, method | segment result | segment the moving object from background |
 | find_object_location | 9.1 9.4 | template, image, method | similarity array | find object location in image |
 | best_template_match | 9.3 | template_list, image, method, decimal | the the template which matches the image best | find the best match template |
 | compute_cross_ratio | 9.10 | p1, p2, p3, p4, method, center_coordinate, magnification_factors, decimal | cross ratio | compute cross ratio |
