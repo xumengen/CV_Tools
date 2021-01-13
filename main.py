@@ -15,6 +15,61 @@ from functional import *
 if __name__ == '__main__':
     solver = Tutorail_solver()
 
+    # 2_7 f和z的单位统一
+    # result = solver.compute_thin_lens_equation(f=35, z1=3000, z2=None)
+    # print(result)
+    # result = solver.compute_thin_lens_equation(f=35, z1=500, z2=None)
+    # print(result)
+
+    # 2_11 输出结果需要手动四舍五入
+    # result = solver.compute_3d_point_2d_uv_coordinate(ori_coordinate=[10, 10, 500], image_principal_point=[244, 180], magnification_factors=[925, 740])
+    # print(result)
+
+    # result = solver.compute_3d_point_2d_xy_coordinate(ori_coordinate=[0.4, 0.5, 2.5], f=30)
+    # print(result)
+
+    # 2_12 ori_image -> RGB format
+    # ori_imgae = [[[205, 195],
+    #               [238, 203]],
+    #              [[143, 138],
+    #               [166, 143]],
+    #              [[154, 145],
+    #               [174, 151]],
+    # ]
+    # result = solver.convert_rbg_to_gray(ori_imgae, 8)
+    # print(result)
+    # result = solver.convert_rbg_to_gray(ori_imgae, 2)
+    # print(result)
+
+    # 3_1
+    # mask = [[1, 0], 
+    #         [1, 1]]
+    # I1 = [[0, 0, 0], 
+    #       [0, 1, 0], 
+    #       [0, 0, 0]]
+    # I2 = [[0, 0, 0], 
+    #       [1, 1, 0], 
+    #       [0, 1, 0]]
+    # result_1 = solver.convolution(mask, I1)
+    # result_2 = solver.convolution(mask, I2)
+    # print(result_1)
+    # print(result_2)
+
+    # mask = [[0, 0, 0],
+    #         [0, 0 ,1],
+    #         [0, 0, 0]]
+    # I = [[0.25, 1, 0.8],
+    #      [0.75, 1, 1],
+    #      [0, 1, 0.4]]
+    # result = solver.convolution(mask, I, 'same')
+    # print(result)
+
+    # result = solver.compute_pixel_val_using_gaussian((3, 3), standard_deviation=0.5, decimal=2)
+    # L = [[-1, -1, -1],
+    #      [-1, 8, -1],
+    #      [-1, -1, -1]]
+    # print(solver.convolution(result, L, 'same'))
+
     # result = solver.compute_distance_between_point_and_horopter(400, 60, -15, 15)
     # print(result)
 
@@ -106,46 +161,6 @@ if __name__ == '__main__':
     # print(solver.hough_transform(image_region, theta_1))
     # print(solver.hough_transform(image_region, theta_2))
 
-    # result = solver.compute_thin_lens_equation(f=35, z1=3000, z2=None)
-    # print(result)
-    # result = solver.compute_thin_lens_equation(f=35, z1=500, z2=None)
-    # print(result)
-
-    # result = solver.compute_3d_point_2d_uv_coordinate([10, 10, 500], [244, 180], [925, 740], decimal=2)
-    # print(result)
-
-    # result = solver.compute_3d_point_2d_xy_coordinate(ori_coordinate=[0.4, 0.5, 2.5], f=30)
-    # print(result)
-
-    # ori_imgae = [[[205, 195],
-    #               [238, 203]],
-    #              [[143, 138],
-    #               [166, 143]],
-    #              [[154, 145],
-    #               [174, 151]],
-    # ]
-    # result = solver.convert_rbg_to_gray(ori_imgae, 8)
-    # print(result)
-    # result = solver.convert_rbg_to_gray(ori_imgae, 2)
-    # print(result)
-
-    # mask = [[1, 0], [1, 1]]
-    # I1 = [[0, 0, 0], [0, 1, 0], [0, 0, 0]]
-    # I2 = [[0, 0, 0], [1, 1, 0], [0, 1, 0]]
-    # result_1 = solver.convolution(mask, I1)
-    # result_2 = solver.convolution(mask, I2)
-    # print(result_1)
-    # print(result_2)
-
-    # mask = [[0, 0, 0],
-    #         [0, 0 ,1],
-    #         [0, 0, 0]]
-    # I = [[0.25, 1, 0.8],
-    #      [0.75, 1, 1],
-    #      [0, 1, 0.4]]
-    # result = solver.convolution(mask, I, 'same')
-    # print(result)
-
     # mask = [[1, 0.5, 0.1],
     #         [0.5, 0.25, 0.05],
     #         [0.1, 0.05, 0.01]]
@@ -153,8 +168,6 @@ if __name__ == '__main__':
     #      [1, 1, 1],
     #      [1, 1, 1]]
     # print(solver.convolution(mask, I, 'same'))
-
-    #print(solver.compute_pixel_val_using_gaussian((3, 3), standard_deviation=0.46))
 
     # tutorial9
     # template = [[100, 150, 200],
@@ -239,3 +252,8 @@ if __name__ == '__main__':
     #                [135, 128],
     #                [269, 243]]
     # print(solver.RANSAC(left_point, right_point, thres=20, trials=[0, 1, 2], decimal=2))
+
+    feature_vector_array = [[[20, 10, 5], [10, 20, 15]], 
+                            [[15, 5, 5], [5, 5, 20]], 
+                            [[15, 15, 15], [20, 15, 10]]]
+    solver.region_growing(feature_vector_array)

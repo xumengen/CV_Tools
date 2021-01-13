@@ -283,7 +283,7 @@ class Tutorail_solver:
             return None
 
         feature_vector_array = np.array(feature_vector_array)
-        result_array = np.empty(feature_vector_array.shape[:-1])
+        result_array = np.zeros(feature_vector_array.shape[:-1])
         visited_array = [[False for j in range(feature_vector_array.shape[1])] for i in range(feature_vector_array.shape[0])]
         i, j = start[0], start[1]
         label = 1 
@@ -294,8 +294,8 @@ class Tutorail_solver:
             label += 1
             [i, j] = check_result_array()
             result_array[i][j] = label
-            sub_region_growing(i, j)    
-    
+            sub_region_growing(i, j)
+
         print("the result of region growing is\n {}\n".format(result_array))
         return result_array
 
@@ -800,7 +800,7 @@ class Tutorail_solver:
             print("Your input kidding me!!!")
 
     # tutorial 2_11
-    def compute_3d_point_2d_uv_coordinate(self, ori_coordinate, image_principal_point, magnification_factors, decimal=2):
+    def compute_3d_point_2d_uv_coordinate(self, ori_coordinate, image_principal_point, magnification_factors):
         """
         """
         assert len(ori_coordinate) == 3
@@ -813,7 +813,7 @@ class Tutorail_solver:
                             [0, 1, 0, 0],
                             [0, 0, 1, 0]])
         array_3 = np.array(ori_coordinate+[1.0])
-        result_array = np.around((1 / float(ori_coordinate[-1]) * np.dot(np.dot(array_1, array_2), array_3)), decimal)
+        result_array = (1 / float(ori_coordinate[-1]) * np.dot(np.dot(array_1, array_2), array_3))
         return result_array
     
     def compute_3d_point_2d_xy_coordinate(self, ori_coordinate, f):
