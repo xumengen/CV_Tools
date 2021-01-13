@@ -148,18 +148,18 @@ if __name__ == '__main__':
     # print(solver.compute_dist_between_two_feature_vector_array(left_array, right_array))
 
     # 6_8
-    # left_point = [[187, 168],
-    #               [203, 290],
-    #               [215, 87],
-    #               [234, 28],
-    #               [366, 142]]
+    left_point = [[187, 168],
+                  [203, 290],
+                  [215, 87],
+                  [234, 28],
+                  [366, 142]]
     
-    # right_point = [[269, 243],
-    #                [101, 394],
-    #                [336, 178],
-    #                [135, 128],
-    #                [269, 243]]
-    # print(solver.RANSAC(left_point, right_point, thres=20, trials=[0, 1, 2], decimal=2))
+    right_point = [[269, 243],
+                   [101, 394],
+                   [336, 178],
+                   [135, 128],
+                   [269, 243]]
+    print(solver.RANSAC(left_point, right_point, thres=20, trials=[0, 1, 2], decimal=2))
 
     # 6_9
     # Ix = [[1, 0, 0, 0, 0], 
@@ -282,3 +282,46 @@ if __name__ == '__main__':
     #                         [[15, 5, 5], [5, 5, 20]], 
     #                         [[15, 15, 15], [20, 15, 10]]]
     # solver.region_growing(feature_vector_array)
+
+    # I = [[5, 11, 21],
+    #         [1, 6, 9],
+    #         [3, 9, 8]]
+    # mask = [[1/4, 1/4],
+    #      [1/4, 1/4]]
+    # print(solver.convolution(mask=mask, I=I))
+
+    # input_array = [[0, 1, 1],
+    #                [0, 0 ,1],
+    #                [0, 1, 0]]
+    # output_array = solver.dilation(input_array, 'hv')
+    # print(output_array)
+
+    # result = solver.compute_pixel_val_using_gaussian((3, 3), standard_deviation=0.5, decimal=2)
+    # print(result)
+
+    # left_image = [[40, 60, 40, 20, 50],
+    #             [10, 50, 80, 80, 30],
+    #             [70, 10, 70, 60, 90]]
+    # right_image = [[20, 70, 70, 20, 50],
+    #                [30, 20, 50, 10, 50], 
+    #                [50, 70, 40, 80, 70]]
+    # # 坐标从之前的行列坐标改成了xy坐标
+    # coordinate = [2, 2]
+    # result = solver.compute_similarity_between_point_and_image(coordinate, left_image, right_image, k=3)
+    # print(result)
+
+    # Ix = [[1, 0, -2], [0, -1, 0], [0, -3, 1]]
+    # Iy = [[2, 1, -3], [0, 0, 0], [0, -2, 1]]
+    # result = solver.compute_harris_corner_detector(Ix, Iy, k=0.05, length=3)
+    # print(result)
+
+    # class_list = ['A', 'A', 'B', 'B']
+    # feature_vector_list = [[2, 2, 0, 1], [3, 3, 1, 4], [1, 2, 3, 2], [2, 1, 3, 0]]
+    # object_feature_vector = [1, 1, 1, 1]
+    # result_1, result_2, result_3 = solver.compute_object_class(class_list, feature_vector_list, object_feature_vector, k=3)
+    # print("the result of nearest mean classifier is {}.\nthe result of nearest neighbour classifier is {}.\nthe result ofk-nearest neighbour classifier is {}.".format(result_1, result_2, result_3))
+
+    # image_1 = [2,3.5,0.5,2]
+    # image_2 = [0.5,0.75,3.5,1]
+    # new_image = [2,1,2,1]
+    # print(solver.best_template_match([image_1, image_2], new_image, method='normalised_cross_correlation', decimal=4))

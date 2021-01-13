@@ -240,7 +240,7 @@ class Tutorail_solver:
         right_point = np.array(right_point)
         result_list = []
         index_list = []
-        for i in range(len(trials)):
+        for i in trials:
             translation = left_point[i] - right_point[i]
             count = 0
             tmp_list = []
